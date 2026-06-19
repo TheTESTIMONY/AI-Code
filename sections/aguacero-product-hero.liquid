@@ -1,1395 +1,2577 @@
-{%- comment -%}
-  ============================================================
-  AGUACERO — Showerhead product section (Cold Life style layout)
-  Self-contained: no theme JS/CSS dependencies. Scoped styles.
-  Add to a product template via the theme customizer.
-  ============================================================
-{%- endcomment -%}
-
-{%- liquid
-  assign s = section.settings
-  assign uid = section.id | replace: '-', '' | replace: '_', ''
-  assign product = product | default: section.settings.product
--%}
+{% assign uid = section.id %}
 
 <style>
-  #agc-{{ uid }}{
-    --accent: {{ s.color_accent }};
-    --pale: {{ s.color_pale }};
-    --pale-border: {{ s.color_pale_border }};
-    --dark: {{ s.color_dark }};
-    --text: {{ s.color_text }};
-    --muted: {{ s.color_muted }};
-    --border: {{ s.color_border }};
-    --bg: {{ s.color_bg }};
-    --offwhite: {{ s.color_offwhite }};
-    --ok: {{ s.color_ok }};
-    --radius: 14px;
-  }
-  #agc-{{ uid }} *{ box-sizing:border-box; }
-  #agc-{{ uid }}{
-    color:var(--text); background:var(--bg);
-    font-family:inherit; line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
-  #agc-{{ uid }} img{ max-width:100%; display:block; }
-  #agc-{{ uid }} .agc-wrap{ max-width:1180px; margin:0 auto; padding:0 20px; }
-  #agc-{{ uid }} h1,#agc-{{ uid }} h2,#agc-{{ uid }} h3{ margin:0; line-height:1.15; }
-  #agc-{{ uid }} .em{ color:var(--accent); font-style:italic; }
-  #agc-{{ uid }} .eyebrow{
-    text-transform:uppercase; letter-spacing:.16em; font-size:11px;
-    font-weight:700; color:var(--accent); margin:0 0 12px;
-  }
+#agc-{{ uid }} {
+  --bg: {{ section.settings.color_bg }};
+  --white: {{ section.settings.color_white }};
+  --dark: {{ section.settings.color_dark }};
+  --accent: {{ section.settings.color_accent }};
+  --pale: {{ section.settings.color_pale }};
+  --text: {{ section.settings.color_text }};
+  --muted: {{ section.settings.color_muted }};
+  --border: {{ section.settings.color_border }};
+  --ok: {{ section.settings.color_ok }};
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+#agc-{{ uid }} * { box-sizing: border-box; margin: 0; padding: 0; }
+#agc-{{ uid }} img { max-width: 100%; display: block; }
 
-  /* ---------- announcement bar ---------- */
-  #agc-{{ uid }} .agc-ann{
-    background:var(--accent); color:#fff; overflow:hidden;
-    font-size:12px; font-weight:600; padding:9px 0;
-  }
-  #agc-{{ uid }} .agc-ann-track{
-    display:flex; gap:48px; white-space:nowrap; width:max-content;
-    animation:agc-marq-{{ uid }} 26s linear infinite;
-  }
-  @keyframes agc-marq-{{ uid }}{ from{transform:translateX(0)} to{transform:translateX(-50%)} }
+/* Fade-in animation */
+#agc-{{ uid }} .agc-fade { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+#agc-{{ uid }} .agc-fade.is-visible { opacity: 1; transform: translateY(0); }
 
-  /* ---------- hero / buy box ---------- */
-  #agc-{{ uid }} .agc-hero{ padding:36px 0 8px; }
-  #agc-{{ uid }} .agc-hero-grid{
-    display:grid; grid-template-columns:1.1fr .9fr; gap:48px; align-items:start;
-  }
-  #agc-{{ uid }} .agc-gallery .agc-main{
-    background:var(--pale); border-radius:var(--radius); overflow:hidden;
-    aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;
-    position:relative;
-  }
-  #agc-{{ uid }} .agc-main img{ width:100%; height:100%; object-fit:cover; }
-  #agc-{{ uid }} .agc-gbadge{
-    position:absolute; top:14px; left:14px; background:var(--dark); color:#fff;
-    font-size:11px; font-weight:700; padding:7px 13px; border-radius:40px; z-index:2;
-  }
-  #agc-{{ uid }} .agc-thumbs{
-    display:flex; gap:8px; margin-top:10px; overflow-x:auto; padding-bottom:4px;
-  }
-  #agc-{{ uid }} .agc-thumb{
-    flex:0 0 auto; width:70px; height:70px; border-radius:10px; overflow:hidden;
-    border:2px solid var(--border); cursor:pointer; background:var(--pale); padding:0;
-  }
-  #agc-{{ uid }} .agc-thumb.is-active{ border-color:var(--accent); }
-  #agc-{{ uid }} .agc-thumb img{ width:100%; height:100%; object-fit:cover; }
+/* ── ANNOUNCEMENT BAR ── */
+#agc-{{ uid }} .agc-announce {
+  background: var(--dark);
+  color: #fff;
+  padding: 10px 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#agc-{{ uid }} .agc-marquee-track {
+  display: inline-flex;
+  gap: 0;
+  animation: agcMarquee 28s linear infinite;
+}
+#agc-{{ uid }} .agc-marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 32px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+#agc-{{ uid }} .agc-marquee-item::after {
+  content: '★';
+  color: #f5c842;
+  font-size: 11px;
+}
+@keyframes agcMarquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
-  #agc-{{ uid }} .agc-tag{
-    display:inline-block; background:var(--pale); color:var(--ok);
-    border:1px solid var(--pale-border); border-radius:50px;
-    font-size:12px; font-weight:600; padding:5px 14px; margin-bottom:14px;
-  }
-  #agc-{{ uid }} .agc-title{ font-size:30px; font-weight:800; letter-spacing:-.01em; }
-  #agc-{{ uid }} .agc-rating{
-    display:flex; align-items:center; gap:8px; margin:12px 0;
-    font-size:13px; color:var(--muted);
-  }
-  #agc-{{ uid }} .agc-stars{ color:var(--accent); letter-spacing:2px; }
-  #agc-{{ uid }} .agc-tagline{ color:var(--muted); font-size:15px; margin:0 0 22px; }
+/* ── HERO ── */
+#agc-{{ uid }} .agc-hero {
+  background: var(--bg);
+  padding: 48px 0 64px;
+}
+#agc-{{ uid }} .agc-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+#agc-{{ uid }} .agc-hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: start;
+}
+/* Gallery */
+#agc-{{ uid }} .agc-gallery { position: sticky; top: 20px; }
+#agc-{{ uid }} .agc-gallery-main {
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--pale);
+  aspect-ratio: 1/1;
+  position: relative;
+}
+#agc-{{ uid }} .agc-gallery-main img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
+}
+#agc-{{ uid }} .agc-gallery-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 50px;
+}
+#agc-{{ uid }} .agc-thumbs {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+#agc-{{ uid }} .agc-thumb {
+  width: 72px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background: var(--pale);
+  flex-shrink: 0;
+}
+#agc-{{ uid }} .agc-thumb.active,
+#agc-{{ uid }} .agc-thumb:hover { border-color: var(--accent); }
+#agc-{{ uid }} .agc-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
-  #agc-{{ uid }} .agc-flabel{
-    font-size:12px; font-weight:700; text-transform:uppercase;
-    letter-spacing:.08em; color:var(--text); margin:18px 0 10px;
-  }
+/* Buy Box */
+#agc-{{ uid }} .agc-buybox { padding-top: 8px; }
+#agc-{{ uid }} .agc-tag-pill {
+  display: inline-block;
+  background: rgba(41,82,204,0.1);
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 50px;
+  margin-bottom: 16px;
+}
+#agc-{{ uid }} .agc-product-title {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-product-title em {
+  font-style: italic;
+  color: var(--accent);
+}
+#agc-{{ uid }} .agc-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-stars { color: #f5c842; font-size: 18px; letter-spacing: 2px; }
+#agc-{{ uid }} .agc-rating-val { font-weight: 700; font-size: 15px; color: var(--dark); }
+#agc-{{ uid }} .agc-rating-cnt { font-size: 13px; color: var(--muted); }
+#agc-{{ uid }} .agc-tagline {
+  font-size: 15px;
+  color: var(--muted);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+/* Tier selector */
+#agc-{{ uid }} .agc-tier-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+#agc-{{ uid }} .agc-tiers { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+#agc-{{ uid }} .agc-tier-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: var(--white);
+  position: relative;
+}
+#agc-{{ uid }} .agc-tier-card:hover { border-color: var(--accent); }
+#agc-{{ uid }} .agc-tier-card.selected {
+  border-color: var(--accent);
+  background: rgba(41,82,204,0.04);
+}
+#agc-{{ uid }} .agc-tier-radio {
+  width: 20px; height: 20px;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.2s;
+}
+#agc-{{ uid }} .agc-tier-card.selected .agc-tier-radio {
+  border-color: var(--accent);
+  background: var(--accent);
+}
+#agc-{{ uid }} .agc-tier-card.selected .agc-tier-radio::after {
+  content: '';
+  width: 8px; height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+#agc-{{ uid }} .agc-tier-info {}
+#agc-{{ uid }} .agc-tier-name { font-weight: 700; font-size: 15px; color: var(--dark); }
+#agc-{{ uid }} .agc-tier-unit { font-size: 12px; color: var(--muted); }
+#agc-{{ uid }} .agc-tier-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+#agc-{{ uid }} .agc-tier-price { text-align: right; }
+#agc-{{ uid }} .agc-tier-amount { font-size: 18px; font-weight: 800; color: var(--dark); }
+#agc-{{ uid }} .agc-tier-badge {
+  position: absolute;
+  top: -10px; right: 14px;
+  background: var(--ok);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 50px;
+}
+#agc-{{ uid }} .agc-tier-savings {
+  font-size: 11px;
+  color: var(--ok);
+  font-weight: 600;
+  margin-top: 2px;
+}
+/* Qty */
+#agc-{{ uid }} .agc-qty-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+#agc-{{ uid }} .agc-qty-label { font-size: 13px; font-weight: 700; color: var(--dark); text-transform: uppercase; letter-spacing: 0.1em; }
+#agc-{{ uid }} .agc-qty-ctrl {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+#agc-{{ uid }} .agc-qty-btn {
+  width: 38px; height: 38px;
+  background: none; border: none;
+  font-size: 20px; cursor: pointer;
+  color: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+#agc-{{ uid }} .agc-qty-btn:hover { background: var(--pale); }
+#agc-{{ uid }} .agc-qty-val {
+  min-width: 38px; text-align: center;
+  font-weight: 700; font-size: 16px;
+  color: var(--dark);
+}
+/* CTA */
+#agc-{{ uid }} .agc-atc-btn {
+  width: 100%;
+  padding: 18px 32px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-atc-btn:hover { background: var(--accent); }
+#agc-{{ uid }} .agc-atc-btn:active { transform: scale(0.98); }
+#agc-{{ uid }} .agc-delivery {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+#agc-{{ uid }} .agc-delivery strong { color: var(--dark); }
+/* Urgency */
+#agc-{{ uid }} .agc-urgency {
+  background: var(--pale);
+  border-radius: 12px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+}
+#agc-{{ uid }} .agc-urgency-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+}
+#agc-{{ uid }} .agc-urgency-bar-outer {
+  background: var(--border);
+  border-radius: 50px;
+  height: 8px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+#agc-{{ uid }} .agc-urgency-bar-inner {
+  height: 100%;
+  background: var(--ok);
+  border-radius: 50px;
+  transition: width 1s ease;
+}
+#agc-{{ uid }} .agc-urgency-note { font-size: 12px; color: var(--muted); }
+/* Trust badges */
+#agc-{{ uid }} .agc-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+#agc-{{ uid }} .agc-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--pale);
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dark);
+  flex: 1 1 calc(50% - 5px);
+}
+#agc-{{ uid }} .agc-badge-icon { font-size: 18px; }
+/* Timeline */
+#agc-{{ uid }} .agc-timeline-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+#agc-{{ uid }} .agc-timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+#agc-{{ uid }} .agc-tl-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+#agc-{{ uid }} .agc-tl-item:last-child { border-bottom: none; }
+#agc-{{ uid }} .agc-tl-week {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+#agc-{{ uid }} .agc-tl-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+/* Payment logos */
+#agc-{{ uid }} .agc-pay-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+#agc-{{ uid }} .agc-pay-logos {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+}
+#agc-{{ uid }} .agc-pay-logo {
+  height: 28px;
+  opacity: 0.6;
+  object-fit: contain;
+}
+#agc-{{ uid }} .agc-pay-pill {
+  background: var(--pale);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
 
-  /* variant pills */
-  #agc-{{ uid }} .agc-variants{ display:flex; flex-wrap:wrap; gap:8px; }
-  #agc-{{ uid }} .agc-variant{ position:relative; }
-  #agc-{{ uid }} .agc-variant input{ position:absolute; opacity:0; pointer-events:none; }
-  #agc-{{ uid }} .agc-variant label{
-    display:block; cursor:pointer; padding:10px 16px; border-radius:10px;
-    border:1.5px solid var(--border); background:#fff; font-size:14px; font-weight:600;
-    transition:.15s;
-  }
-  #agc-{{ uid }} .agc-variant input:checked + label{
-    border-color:var(--accent); background:var(--pale);
-  }
-  #agc-{{ uid }} .agc-variant input:disabled + label{
-    opacity:.4; text-decoration:line-through; cursor:not-allowed;
-  }
+/* ── UGC MASONRY ── */
+#agc-{{ uid }} .agc-ugc {
+  background: var(--white);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 10px;
+}
+#agc-{{ uid }} .agc-section-title {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  text-align: center;
+  margin-bottom: 48px;
+}
+#agc-{{ uid }} .agc-masonry {
+  columns: 4;
+  column-gap: 14px;
+}
+#agc-{{ uid }} .agc-ugc-card {
+  break-inside: avoid;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background: var(--pale);
+}
+#agc-{{ uid }} .agc-ugc-card img {
+  width: 100%;
+  display: block;
+  transition: transform 0.4s ease;
+}
+#agc-{{ uid }} .agc-ugc-card:hover img { transform: scale(1.04); }
+#agc-{{ uid }} .agc-ugc-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(26,16,54,0.9) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
+}
+#agc-{{ uid }} .agc-ugc-card:hover .agc-ugc-overlay { opacity: 1; }
+#agc-{{ uid }} .agc-ugc-stars { color: #f5c842; font-size: 13px; margin-bottom: 6px; }
+#agc-{{ uid }} .agc-ugc-quote { font-size: 13px; color: white; line-height: 1.4; margin-bottom: 6px; }
+#agc-{{ uid }} .agc-ugc-author { font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); }
+#agc-{{ uid }} .agc-ugc-hidden { display: none; }
+#agc-{{ uid }} .agc-show-more {
+  display: block;
+  margin: 32px auto 0;
+  padding: 14px 40px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#agc-{{ uid }} .agc-show-more:hover { background: var(--accent); }
 
-  /* pricing tiers */
-  #agc-{{ uid }} .agc-tiers{ display:flex; flex-direction:column; gap:10px; }
-  #agc-{{ uid }} .agc-tier input[type=radio]{ position:absolute; opacity:0; pointer-events:none; }
-  #agc-{{ uid }} .agc-tier:has(input:checked){ border-color:var(--accent); background:var(--pale); }
-  #agc-{{ uid }} .agc-tier:has(input:checked) .agc-tier-radio{ border-color:var(--accent); }
-  #agc-{{ uid }} .agc-tier:has(input:checked) .agc-tier-radio::after{ content:""; position:absolute; inset:4px; border-radius:50%; background:var(--accent); }
-  #agc-{{ uid }} .agc-tier:has(input:disabled){ opacity:.45; }
-  #agc-{{ uid }} .agc-tier{
-    position:relative; border:1.5px solid var(--border); border-radius:12px;
-    background:#fff; padding:14px 16px; cursor:pointer; transition:.15s;
-    display:flex; align-items:center; gap:14px;
-  }
-  #agc-{{ uid }} .agc-tier.is-active{ border-color:var(--accent); background:var(--pale); }
-  #agc-{{ uid }} .agc-tier-radio{
-    width:20px; height:20px; border-radius:50%; border:2px solid var(--border);
-    flex:0 0 auto; position:relative;
-  }
-  #agc-{{ uid }} .agc-tier.is-active .agc-tier-radio{ border-color:var(--accent); }
-  #agc-{{ uid }} .agc-tier.is-active .agc-tier-radio::after{
-    content:""; position:absolute; inset:4px; border-radius:50%; background:var(--accent);
-  }
-  #agc-{{ uid }} .agc-tier-body{ flex:1; }
-  #agc-{{ uid }} .agc-tier-name{ font-weight:700; font-size:15px; }
-  #agc-{{ uid }} .agc-tier-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
-  #agc-{{ uid }} .agc-tier-price{ text-align:right; }
-  #agc-{{ uid }} .agc-tier-each{ font-weight:800; font-size:16px; }
-  #agc-{{ uid }} .agc-tier-unit{ font-size:11px; color:var(--muted); }
-  #agc-{{ uid }} .agc-tier-badge{
-    position:absolute; top:-9px; right:14px; background:var(--dark); color:#fff;
-    font-size:10px; font-weight:700; padding:3px 9px; border-radius:40px;
-  }
-  #agc-{{ uid }} .agc-save{
-    font-size:11px; font-weight:700; color:var(--ok); background:var(--pale);
-    border-radius:6px; padding:2px 7px; margin-left:8px;
-  }
+/* ── BENEFITS ── */
+#agc-{{ uid }} .agc-benefits {
+  background: var(--pale);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-bens-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+#agc-{{ uid }} .agc-ben-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+#agc-{{ uid }} .agc-ben-card:hover {
+  box-shadow: 0 12px 40px rgba(26,16,54,0.12);
+  transform: translateY(-4px);
+}
+#agc-{{ uid }} .agc-ben-img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  display: block;
+}
+#agc-{{ uid }} .agc-ben-body { padding: 22px; }
+#agc-{{ uid }} .agc-ben-emoji { font-size: 28px; margin-bottom: 8px; display: block; }
+#agc-{{ uid }} .agc-ben-title { font-size: 18px; font-weight: 700; color: var(--dark); margin-bottom: 6px; }
+#agc-{{ uid }} .agc-ben-desc { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+#agc-{{ uid }} .agc-ben-stat { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; }
+#agc-{{ uid }} .agc-ben-stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
 
-  /* cta */
-  #agc-{{ uid }} .agc-qty{ display:flex; align-items:center; gap:0; margin:16px 0 0;
-    border:1.5px solid var(--border); border-radius:10px; width:fit-content; overflow:hidden; }
-  #agc-{{ uid }} .agc-qty button{
-    background:#fff; border:0; width:42px; height:44px; font-size:18px; cursor:pointer; color:var(--text);
-  }
-  #agc-{{ uid }} .agc-qty input{ width:44px; height:44px; border:0; text-align:center; font-size:15px; font-weight:600;
-    -moz-appearance:textfield; }
-  #agc-{{ uid }} .agc-qty input::-webkit-outer-spin-button,
-  #agc-{{ uid }} .agc-qty input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
+/* ── MEDIA MARQUEE ── */
+#agc-{{ uid }} .agc-media-marquee {
+  background: var(--dark);
+  padding: 20px 0;
+  overflow: hidden;
+}
+#agc-{{ uid }} .agc-media-track {
+  display: inline-flex;
+  gap: 0;
+  animation: agcMarquee 22s linear infinite;
+}
+#agc-{{ uid }} .agc-media-item {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 40px;
+  font-size: 18px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+#agc-{{ uid }} .agc-media-item img {
+  height: 36px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.5;
+}
 
-  #agc-{{ uid }} .agc-cta{
-    width:100%; margin-top:16px; border:0; cursor:pointer;
-    background:var(--dark); color:#fff; font-weight:700; font-size:15px;
-    padding:17px; border-radius:50px; transition:.18s; letter-spacing:.01em;
-  }
-  #agc-{{ uid }} .agc-cta:hover{ background:var(--accent); }
-  #agc-{{ uid }} .agc-cta:disabled{ opacity:.5; cursor:not-allowed; }
+/* ── PROBLEM SECTION ── */
+#agc-{{ uid }} .agc-problem {
+  background: var(--dark);
+  padding: 80px 0;
+  color: white;
+}
+#agc-{{ uid }} .agc-prob-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+#agc-{{ uid }} .agc-prob-img {
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+}
+#agc-{{ uid }} .agc-prob-img img { width: 100%; height: 100%; object-fit: cover; }
+#agc-{{ uid }} .agc-prob-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-prob-title {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: white;
+  margin-bottom: 18px;
+}
+#agc-{{ uid }} .agc-prob-intro { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 36px; }
+#agc-{{ uid }} .agc-prob-stats { display: flex; flex-direction: column; gap: 24px; }
+#agc-{{ uid }} .agc-prob-stat {}
+#agc-{{ uid }} .agc-prob-num {
+  font-size: 52px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+#agc-{{ uid }} .agc-prob-label { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 1.4; }
 
-  #agc-{{ uid }} .agc-delivery{ font-size:13px; color:var(--muted); margin-top:14px; }
-  #agc-{{ uid }} .agc-delivery strong{ color:var(--ok); }
+/* ── FILTRATION / CIRCULAR STATS ── */
+#agc-{{ uid }} .agc-filtration {
+  background: var(--accent);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-filtration .agc-section-eyebrow { color: rgba(255,255,255,0.7); }
+#agc-{{ uid }} .agc-filtration .agc-section-title { color: white; }
+#agc-{{ uid }} .agc-rings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  margin-top: 48px;
+}
+#agc-{{ uid }} .agc-ring-wrap { text-align: center; }
+#agc-{{ uid }} .agc-ring { position: relative; display: inline-block; }
+#agc-{{ uid }} .agc-ring-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 800;
+  color: white;
+}
+#agc-{{ uid }} .agc-ring-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  margin-top: 16px;
+}
+#agc-{{ uid }} .agc-ring-sublabel { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 4px; }
 
-  /* urgency */
-  #agc-{{ uid }} .agc-urgency{
-    margin-top:18px; background:var(--offwhite); border:1px solid var(--border);
-    border-radius:12px; padding:16px;
-  }
-  #agc-{{ uid }} .agc-urgency-top{ display:flex; justify-content:space-between; font-size:12px;
-    font-weight:700; margin-bottom:8px; }
-  #agc-{{ uid }} .agc-urgency-bar{ height:8px; background:var(--border); border-radius:50px; overflow:hidden; }
-  #agc-{{ uid }} .agc-urgency-fill{ height:100%; background:var(--accent); border-radius:50px; }
-  #agc-{{ uid }} .agc-urgency-note{ font-size:12px; color:var(--muted); margin-top:8px; }
+/* ── ENDORSEMENT ── */
+#agc-{{ uid }} .agc-endorsement {
+  background: var(--pale);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-aval-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+#agc-{{ uid }} .agc-aval-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-aval-title {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 20px;
+}
+#agc-{{ uid }} .agc-aval-quote {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 24px;
+  font-style: italic;
+}
+#agc-{{ uid }} .agc-aval-name { font-size: 16px; font-weight: 700; color: var(--dark); }
+#agc-{{ uid }} .agc-aval-role { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+#agc-{{ uid }} .agc-aval-cta {
+  display: inline-block;
+  padding: 15px 32px;
+  background: var(--dark);
+  color: white;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+#agc-{{ uid }} .agc-aval-cta:hover { background: var(--accent); }
+#agc-{{ uid }} .agc-aval-img-wrap {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  aspect-ratio: 3/4;
+}
+#agc-{{ uid }} .agc-aval-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+#agc-{{ uid }} .agc-aval-banner {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--dark);
+  color: white;
+  padding: 16px 20px;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
 
-  /* trust badges row */
-  #agc-{{ uid }} .agc-trust{ display:flex; flex-wrap:wrap; gap:14px; margin-top:18px; }
-  #agc-{{ uid }} .agc-trust-item{ display:flex; align-items:center; gap:6px;
-    font-size:12px; color:var(--muted); font-weight:600; }
-  #agc-{{ uid }} .agc-trust-item .ic{ font-size:16px; }
+/* ── BEFORE/AFTER ── */
+#agc-{{ uid }} .agc-before-after {
+  background: var(--white);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-ba-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+#agc-{{ uid }} .agc-ba-pair {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+#agc-{{ uid }} .agc-ba-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+#agc-{{ uid }} .agc-ba-side { position: relative; }
+#agc-{{ uid }} .agc-ba-side img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+#agc-{{ uid }} .agc-ba-label {
+  position: absolute;
+  top: 12px; left: 12px;
+  background: rgba(26,16,54,0.8);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 50px;
+}
+#agc-{{ uid }} .agc-ba-note {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 28px;
+}
 
-  /* timeline */
-  #agc-{{ uid }} .agc-timeline{ margin-top:20px; border-top:1px solid var(--border); padding-top:18px; }
-  #agc-{{ uid }} .agc-tl-row{ display:flex; gap:12px; align-items:flex-start; margin-bottom:10px; font-size:13px; }
-  #agc-{{ uid }} .agc-tl-dot{ width:9px; height:9px; border-radius:50%; background:var(--accent);
-    margin-top:5px; flex:0 0 auto; }
-  #agc-{{ uid }} .agc-tl-row b{ color:var(--text); }
-  #agc-{{ uid }} .agc-tl-row span{ color:var(--muted); }
+/* ── TESTIMONIALS ── */
+#agc-{{ uid }} .agc-testimonials {
+  background: var(--pale);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-tc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+#agc-{{ uid }} .agc-tc-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px;
+  transition: box-shadow 0.2s;
+}
+#agc-{{ uid }} .agc-tc-card:hover { box-shadow: 0 8px 30px rgba(26,16,54,0.08); }
+#agc-{{ uid }} .agc-tc-avatar {
+  width: 48px; height: 48px;
+  background: var(--pale);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  margin-bottom: 14px;
+}
+#agc-{{ uid }} .agc-tc-name { font-size: 15px; font-weight: 700; color: var(--dark); }
+#agc-{{ uid }} .agc-tc-role { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+#agc-{{ uid }} .agc-tc-stars { color: #f5c842; font-size: 14px; letter-spacing: 2px; margin-bottom: 12px; }
+#agc-{{ uid }} .agc-tc-quote { font-size: 14px; color: var(--muted); line-height: 1.6; font-style: italic; }
 
-  /* payments */
-  #agc-{{ uid }} .agc-pay{ display:flex; align-items:center; gap:14px; flex-wrap:wrap;
-    margin-top:18px; font-size:12px; color:var(--muted); }
-  #agc-{{ uid }} .agc-pay img{ height:26px; width:auto; border-radius:4px; }
+/* ── FAQ ── */
+#agc-{{ uid }} .agc-faq {
+  background: var(--bg);
+  padding: 80px 0;
+}
+#agc-{{ uid }} .agc-faq-inner { max-width: 720px; margin: 0 auto; }
+#agc-{{ uid }} .agc-faq-item {
+  border-bottom: 1px solid var(--border);
+}
+#agc-{{ uid }} .agc-faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--dark);
+  gap: 16px;
+}
+#agc-{{ uid }} .agc-faq-icon {
+  flex-shrink: 0;
+  width: 24px; height: 24px;
+  background: var(--pale);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  color: var(--accent);
+  transition: transform 0.2s;
+}
+#agc-{{ uid }} .agc-faq-item.open .agc-faq-icon { transform: rotate(45deg); }
+#agc-{{ uid }} .agc-faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.2s ease;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+#agc-{{ uid }} .agc-faq-item.open .agc-faq-a { max-height: 400px; padding-bottom: 20px; }
 
-  /* ---------- generic section ---------- */
-  #agc-{{ uid }} .agc-sec{ padding:70px 0; }
-  #agc-{{ uid }} .agc-sec.alt{ background:var(--offwhite); }
-  #agc-{{ uid }} .agc-sec.dark{ background:var(--dark); color:#fff; }
-  #agc-{{ uid }} .agc-sec.accent{ background:var(--accent); color:#fff; }
-  #agc-{{ uid }} .agc-sec-head{ text-align:center; max-width:640px; margin:0 auto 44px; }
-  #agc-{{ uid }} .agc-sec-title{ font-size:34px; font-weight:800; letter-spacing:-.01em; }
-  #agc-{{ uid }} .agc-sec.dark .agc-sec-title,
-  #agc-{{ uid }} .agc-sec.accent .agc-sec-title{ color:#fff; }
-  #agc-{{ uid }} .agc-sec-sub{ color:var(--muted); font-size:16px; margin-top:12px; }
-  #agc-{{ uid }} .agc-sec.accent .agc-sec-sub{ color:rgba(255,255,255,.85); }
+/* ── STICKY ATC ── */
+#agc-sticky-{{ uid }} {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: white;
+  border-top: 1px solid var(--border, #e3ddd3);
+  padding: 12px 24px;
+  z-index: 9999;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
+}
+#agc-sticky-{{ uid }}.visible { transform: translateY(0); }
+#agc-sticky-{{ uid }} .agc-sticky-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+#agc-sticky-{{ uid }} .agc-sticky-thumb {
+  width: 52px; height: 52px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+#agc-sticky-{{ uid }} .agc-sticky-thumb img { width: 100%; height: 100%; object-fit: cover; }
+#agc-sticky-{{ uid }} .agc-sticky-name { font-size: 15px; font-weight: 700; color: #1a1036; flex: 1; }
+#agc-sticky-{{ uid }} .agc-sticky-price { font-size: 18px; font-weight: 800; color: #1a1036; }
+#agc-sticky-{{ uid }} .agc-sticky-btn {
+  padding: 12px 28px;
+  background: #1a1036;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+#agc-sticky-{{ uid }} .agc-sticky-btn:hover { background: #2952cc; }
 
-  /* benefits ("you'll experience") */
-  #agc-{{ uid }} .agc-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:22px; }
-  #agc-{{ uid }} .agc-benefit{ background:var(--pale); border:1px solid var(--border);
-    border-radius:14px; padding:28px 22px; text-align:center; }
-  #agc-{{ uid }} .agc-benefit .ic{ font-size:42px; }
-  #agc-{{ uid }} .agc-benefit img{ height:64px; width:auto; margin:0 auto; }
-  #agc-{{ uid }} .agc-benefit h3{ font-size:18px; font-weight:700; margin:14px 0 8px; }
-  #agc-{{ uid }} .agc-benefit p{ color:var(--muted); font-size:14px; margin:0; }
-
-  /* stats */
-  #agc-{{ uid }} .agc-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; text-align:center; }
-  #agc-{{ uid }} .agc-stat-num{ font-size:60px; font-weight:800; line-height:1; color:#fff; }
-  #agc-{{ uid }} .agc-stat-label{ color:rgba(255,255,255,.9); font-size:14px; margin-top:12px; }
-
-  /* comparison */
-  #agc-{{ uid }} .agc-cmp{ max-width:760px; margin:0 auto; border-radius:16px; overflow:hidden;
-    border:1px solid var(--border); }
-  #agc-{{ uid }} .agc-cmp-head{ display:grid; grid-template-columns:1fr 130px 130px; }
-  #agc-{{ uid }} .agc-cmp-head > div{ padding:16px; font-weight:700; font-size:13px; text-align:center; color:#fff; }
-  #agc-{{ uid }} .agc-cmp-head .f{ background:var(--pale); color:var(--text); text-align:left; }
-  #agc-{{ uid }} .agc-cmp-head .us{ background:var(--accent); }
-  #agc-{{ uid }} .agc-cmp-head .them{ background:var(--dark); }
-  #agc-{{ uid }} .agc-cmp-row{ display:grid; grid-template-columns:1fr 130px 130px; border-top:1px solid var(--border); }
-  #agc-{{ uid }} .agc-cmp-row > div{ padding:16px; display:flex; align-items:center; justify-content:center; }
-  #agc-{{ uid }} .agc-cmp-row .f{ justify-content:flex-start; flex-direction:column; align-items:flex-start; background:#fff; }
-  #agc-{{ uid }} .agc-cmp-row .f b{ font-size:13px; font-weight:700; letter-spacing:.02em; }
-  #agc-{{ uid }} .agc-cmp-row .f span{ font-size:12px; color:var(--muted); }
-  #agc-{{ uid }} .agc-cmp-row .us{ background:var(--pale); }
-  #agc-{{ uid }} .agc-cmp-row .them{ background:var(--offwhite); }
-  #agc-{{ uid }} .agc-yes{ color:var(--accent); font-size:20px; font-weight:700; }
-  #agc-{{ uid }} .agc-no{ color:var(--border); font-size:20px; }
-
-  /* filter layers (tabs) */
-  #agc-{{ uid }} .agc-tabs{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:28px; }
-  #agc-{{ uid }} .agc-tab{
-    border:1px solid var(--border); background:#fff; color:var(--muted);
-    border-radius:50px; padding:9px 18px; font-size:13px; font-weight:600; cursor:pointer; transition:.15s;
-  }
-  #agc-{{ uid }} .agc-tab.is-active{ background:var(--dark); color:#fff; border-color:var(--dark); }
-  #agc-{{ uid }} .agc-layer{ display:none; max-width:680px; margin:0 auto; text-align:center; }
-  #agc-{{ uid }} .agc-layer.is-active{ display:block; }
-  #agc-{{ uid }} .agc-layer-badge{ display:inline-block; background:var(--pale); color:var(--ok);
-    border-radius:50px; padding:5px 14px; font-size:12px; font-weight:700; margin-bottom:14px; }
-  #agc-{{ uid }} .agc-layer h3{ font-size:24px; font-weight:800; margin-bottom:8px; }
-  #agc-{{ uid }} .agc-layer .hint{ font-size:13px; color:var(--muted); margin-bottom:14px; }
-  #agc-{{ uid }} .agc-layer p{ color:var(--text); font-size:16px; line-height:1.6; }
-
-  /* testimonials */
-  #agc-{{ uid }} .agc-tcards{ display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-  #agc-{{ uid }} .agc-tcard{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:24px; }
-  #agc-{{ uid }} .agc-tcard-top{ display:flex; align-items:center; gap:12px; margin-bottom:14px; }
-  #agc-{{ uid }} .agc-tcard-av{ width:46px; height:46px; border-radius:50%; background:var(--pale);
-    border:2px solid var(--pale-border); display:flex; align-items:center; justify-content:center; font-size:22px; }
-  #agc-{{ uid }} .agc-tcard-name{ font-weight:700; font-size:14px; }
-  #agc-{{ uid }} .agc-tcard-role{ font-size:12px; color:var(--muted); }
-  #agc-{{ uid }} .agc-tcard .agc-stars{ font-size:13px; margin-bottom:8px; display:block; }
-  #agc-{{ uid }} .agc-tcard p{ font-size:14px; color:var(--text); margin:0; line-height:1.55; }
-
-  /* faq */
-  #agc-{{ uid }} .agc-faq{ max-width:720px; margin:0 auto; }
-  #agc-{{ uid }} .agc-faq-item{ background:#fff; border:1px solid var(--border); border-radius:12px;
-    margin-bottom:10px; overflow:hidden; }
-  #agc-{{ uid }} .agc-faq-q{ width:100%; text-align:left; background:none; border:0; cursor:pointer;
-    padding:18px 20px; font-size:15px; font-weight:700; color:var(--text);
-    display:flex; justify-content:space-between; align-items:center; gap:12px; }
-  #agc-{{ uid }} .agc-faq-q .pm{ font-size:20px; color:var(--accent); transition:.2s; flex:0 0 auto; }
-  #agc-{{ uid }} .agc-faq-item.is-open .pm{ transform:rotate(45deg); }
-  #agc-{{ uid }} .agc-faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
-  #agc-{{ uid }} .agc-faq-a-inner{ padding:0 20px 18px; color:var(--muted); font-size:14px; line-height:1.6; }
-
-  /* feature cards */
-  #agc-{{ uid }} .agc-features{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  #agc-{{ uid }} .agc-fcard{ background:#fff; border:1px solid var(--border); border-radius:12px; padding:24px; }
-  #agc-{{ uid }} .agc-fcard .ic{ font-size:32px; }
-  #agc-{{ uid }} .agc-fcard img{ height:44px; width:auto; }
-  #agc-{{ uid }} .agc-fcard h3{ font-size:16px; font-weight:700; margin:14px 0 8px; }
-  #agc-{{ uid }} .agc-fcard p{ color:var(--muted); font-size:13px; margin:0; }
-
-  /* problem section */
-  #agc-{{ uid }} .agc-problem-grid{ display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; }
-  #agc-{{ uid }} .agc-problem-img{ border-radius:var(--radius); overflow:hidden; aspect-ratio:4/3; background:#2a2a2a; }
-  #agc-{{ uid }} .agc-problem-img img{ width:100%; height:100%; object-fit:cover; }
-  #agc-{{ uid }} .agc-problem-intro{ font-size:16px; color:rgba(255,255,255,.8); margin:0 0 26px; line-height:1.6; }
-  #agc-{{ uid }} .agc-pstat{ border-top:1px solid rgba(255,255,255,.15); padding:16px 0; display:flex; gap:18px; align-items:baseline; }
-  #agc-{{ uid }} .agc-pstat-num{ font-size:34px; font-weight:800; color:var(--accent); flex:0 0 auto; min-width:84px; }
-  #agc-{{ uid }} .agc-pstat-label{ font-size:14px; color:rgba(255,255,255,.85); }
-
-  /* cause cards */
-  #agc-{{ uid }} .agc-causes{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  #agc-{{ uid }} .agc-cause{ border-radius:14px; overflow:hidden; border:1px solid var(--border); background:#fff; }
-  #agc-{{ uid }} .agc-cause-img{ aspect-ratio:1/1; background:var(--pale); }
-  #agc-{{ uid }} .agc-cause-img img{ width:100%; height:100%; object-fit:cover; }
-  #agc-{{ uid }} .agc-cause-body{ padding:18px; }
-  #agc-{{ uid }} .agc-cause-body h3{ font-size:16px; font-weight:700; margin:0 0 6px; }
-  #agc-{{ uid }} .agc-cause-body p{ font-size:13px; color:var(--muted); margin:0; line-height:1.5; }
-
-  /* endorsement */
-  #agc-{{ uid }} .agc-aval{ display:grid; grid-template-columns:300px 1fr; gap:40px; align-items:center;
-    background:var(--pale); border:1px solid var(--pale-border); border-radius:20px; padding:36px; }
-  #agc-{{ uid }} .agc-aval-img{ width:100%; aspect-ratio:1/1; border-radius:16px; overflow:hidden; background:#fff; }
-  #agc-{{ uid }} .agc-aval-img img{ width:100%; height:100%; object-fit:cover; }
-  #agc-{{ uid }} .agc-aval h2{ font-size:28px; font-weight:800; margin:0 0 14px; }
-  #agc-{{ uid }} .agc-aval-quote{ font-size:17px; line-height:1.6; color:var(--text); margin:0 0 16px; }
-  #agc-{{ uid }} .agc-aval-name{ font-weight:700; }
-  #agc-{{ uid }} .agc-aval-role{ font-size:13px; color:var(--muted); }
-
-  /* before / after */
-  #agc-{{ uid }} .agc-ba-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
-  #agc-{{ uid }} .agc-ba{ display:grid; grid-template-columns:1fr 1fr; gap:8px; border-radius:14px; overflow:hidden; }
-  #agc-{{ uid }} .agc-ba figure{ margin:0; position:relative; }
-  #agc-{{ uid }} .agc-ba figure span{ position:absolute; top:10px; left:10px; background:var(--dark); color:#fff;
-    font-size:11px; font-weight:700; padding:4px 10px; border-radius:40px; text-transform:uppercase; letter-spacing:.05em; }
-  #agc-{{ uid }} .agc-ba figure:last-child span{ background:var(--accent); }
-  #agc-{{ uid }} .agc-ba .ph{ aspect-ratio:3/4; background:var(--pale); }
-  #agc-{{ uid }} .agc-ba img{ width:100%; aspect-ratio:3/4; object-fit:cover; }
-  #agc-{{ uid }} .agc-ba-note{ text-align:center; color:var(--muted); font-size:14px; margin-top:30px; }
-
-  /* video */
-  #agc-{{ uid }} .agc-videos{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
-  #agc-{{ uid }} .agc-video{ position:relative; aspect-ratio:9/16; border-radius:14px; overflow:hidden; background:var(--dark); }
-  #agc-{{ uid }} .agc-video img,#agc-{{ uid }} .agc-video video{ width:100%; height:100%; object-fit:cover; }
-  #agc-{{ uid }} .agc-video .play{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-  #agc-{{ uid }} .agc-video .play span{ width:54px; height:54px; border-radius:50%; background:rgba(255,255,255,.9);
-    display:flex; align-items:center; justify-content:center; font-size:18px; color:var(--dark); }
-  #agc-{{ uid }} .agc-video .vlabel{ position:absolute; left:12px; right:12px; bottom:12px; color:#fff; font-size:13px;
-    font-weight:600; text-shadow:0 1px 4px rgba(0,0,0,.6); }
-
-  #agc-{{ uid }} .agc-tier-img{ width:48px; height:48px; border-radius:8px; object-fit:cover; flex:0 0 auto; background:var(--pale); }
-
-  /* specs section */
-  #agc-{{ uid }} .agc-specs-grid{ display:grid; grid-template-columns:1fr 1fr; gap:48px; max-width:980px; margin:0 auto; }
-  #agc-{{ uid }} .agc-specs-block h3{ font-size:13px; font-weight:800; text-transform:uppercase; letter-spacing:.1em;
-    color:var(--accent); margin:0 0 16px; }
-  #agc-{{ uid }} .agc-ovp{ display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
-  #agc-{{ uid }} .agc-ovp .ck{ color:var(--accent); font-weight:800; flex:0 0 auto; }
-  #agc-{{ uid }} .agc-ovp b{ display:block; font-size:14px; }
-  #agc-{{ uid }} .agc-ovp span{ font-size:13px; color:var(--muted); }
-  #agc-{{ uid }} .agc-speclist{ list-style:none; margin:0 0 28px; padding:0; }
-  #agc-{{ uid }} .agc-speclist li{ font-size:13px; color:var(--text); padding:7px 0 7px 18px; position:relative; border-bottom:1px solid var(--border); }
-  #agc-{{ uid }} .agc-speclist li::before{ content:"–"; position:absolute; left:0; color:var(--accent); }
-  #agc-{{ uid }} .agc-spec-title{ font-size:15px; font-weight:700; margin:0 0 10px; }
-
-  /* sticky add to cart */
-  #agc-{{ uid }}-sticky{ position:fixed; left:0; right:0; bottom:0; z-index:50; transform:translateY(110%);
-    transition:transform .25s ease; background:#fff; border-top:1px solid var(--border);
-    box-shadow:0 -6px 24px rgba(0,0,0,.08); padding:12px 16px; }
-  #agc-{{ uid }}-sticky.show{ transform:translateY(0); }
-  #agc-{{ uid }}-sticky .in{ max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:16px; }
-  #agc-{{ uid }}-sticky .nm{ font-weight:700; font-size:14px; flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  #agc-{{ uid }}-sticky .pr{ font-weight:800; font-size:15px; }
-  #agc-{{ uid }}-sticky button{ border:0; cursor:pointer; background:var(--dark); color:#fff; font-weight:700;
-    padding:12px 26px; border-radius:50px; font-size:14px; }
-  #agc-{{ uid }}-sticky button:hover{ background:var(--accent); }
-  @media (max-width:600px){ #agc-{{ uid }}-sticky .nm{ display:none; } }
-
-  /* responsive */
-  @media (max-width:880px){
-    #agc-{{ uid }} .agc-hero-grid{ grid-template-columns:1fr; gap:28px; }
-    #agc-{{ uid }} .agc-benefits,
-    #agc-{{ uid }} .agc-features{ grid-template-columns:1fr; }
-    #agc-{{ uid }} .agc-stats{ grid-template-columns:1fr; gap:36px; }
-    #agc-{{ uid }} .agc-tcards{ grid-template-columns:1fr; }
-    #agc-{{ uid }} .agc-problem-grid,
-    #agc-{{ uid }} .agc-causes,
-    #agc-{{ uid }} .agc-ba-grid{ grid-template-columns:1fr; }
-    #agc-{{ uid }} .agc-videos{ grid-template-columns:1fr 1fr; }
-    #agc-{{ uid }} .agc-aval{ grid-template-columns:1fr; padding:24px; }
-    #agc-{{ uid }} .agc-specs-grid{ grid-template-columns:1fr; gap:28px; }
-    #agc-{{ uid }} .agc-sec{ padding:48px 0; }
-    #agc-{{ uid }} .agc-title{ font-size:25px; }
-    #agc-{{ uid }} .agc-sec-title{ font-size:26px; }
-    #agc-{{ uid }} .agc-stat-num{ font-size:48px; }
-    #agc-{{ uid }} .agc-cmp-head,
-    #agc-{{ uid }} .agc-cmp-row{ grid-template-columns:1fr 70px 70px; }
-    #agc-{{ uid }} .agc-cmp-head > div,
-    #agc-{{ uid }} .agc-cmp-row > div{ padding:12px 8px; font-size:11px; }
-  }
-  
-  /* ugc masonry */
-  #agc-{{ uid }} .agc-ugc-grid{ columns:4; column-gap:14px; }
-  #agc-{{ uid }} .agc-ugc-card{
-    break-inside:avoid; margin-bottom:14px; border-radius:14px;
-    overflow:hidden; position:relative; background:var(--pale); cursor:pointer;
-  }
-  #agc-{{ uid }} .agc-ugc-card img{ width:100%; display:block; object-fit:cover; }
-  #agc-{{ uid }} .agc-ugc-ph{ width:100%; aspect-ratio:3/4; background:var(--pale); }
-  #agc-{{ uid }} .agc-ugc-overlay{
-    position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.75) 50%, transparent 80%);
-    display:flex; flex-direction:column; justify-content:flex-end;
-    padding:16px; opacity:0; transition:.2s;
-  }
-  #agc-{{ uid }} .agc-ugc-card:hover .agc-ugc-overlay{ opacity:1; }
-  #agc-{{ uid }} .agc-ugc-overlay .agc-stars{ font-size:12px; margin-bottom:6px; }
-  #agc-{{ uid }} .agc-ugc-overlay .agc-ugc-quote{ color:#fff; font-size:13px; line-height:1.45; margin:0 0 8px; font-weight:600; }
-  #agc-{{ uid }} .agc-ugc-overlay .agc-ugc-author{ color:rgba(255,255,255,.8); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; }
-  #agc-{{ uid }} .agc-ugc-inline{ padding:12px; background:var(--pale); }
-  #agc-{{ uid }} .agc-ugc-inline .agc-stars{ font-size:12px; }
-  #agc-{{ uid }} .agc-ugc-inline .agc-ugc-quote{ color:var(--text); font-size:13px; margin:6px 0; }
-  #agc-{{ uid }} .agc-ugc-inline .agc-ugc-author{ color:var(--muted); font-size:11px; font-weight:700; }
-  #agc-{{ uid }} .agc-ugc-more{
-    display:block; margin:24px auto 0; border:1.5px solid var(--accent); background:#fff;
-    color:var(--accent); font-weight:700; font-size:14px; padding:12px 36px; border-radius:50px; cursor:pointer; transition:.15s;
-  }
-  #agc-{{ uid }} .agc-ugc-more:hover{ background:var(--accent); color:#fff; }
-  #agc-{{ uid }} .agc-ugc-hidden{ display:none; }
-  @media(max-width:880px){ #agc-{{ uid }} .agc-ugc-grid{ columns:2; } }
-  @media (prefers-reduced-motion:reduce){
-    #agc-{{ uid }} .agc-ann-track{ animation:none; }
-  }
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  #agc-{{ uid }} .agc-hero-grid { grid-template-columns: 1fr; gap: 32px; }
+  #agc-{{ uid }} .agc-gallery { position: static; }
+  #agc-{{ uid }} .agc-masonry { columns: 2; }
+  #agc-{{ uid }} .agc-bens-grid { grid-template-columns: 1fr; }
+  #agc-{{ uid }} .agc-prob-grid { grid-template-columns: 1fr; }
+  #agc-{{ uid }} .agc-rings-grid { grid-template-columns: 1fr; gap: 32px; }
+  #agc-{{ uid }} .agc-aval-grid { grid-template-columns: 1fr; }
+  #agc-{{ uid }} .agc-ba-grid { grid-template-columns: 1fr; }
+  #agc-{{ uid }} .agc-tc-grid { grid-template-columns: 1fr; }
+  #agc-sticky-{{ uid }} .agc-sticky-name { display: none; }
+}
 </style>
 
 <div id="agc-{{ uid }}">
 
-  {%- comment -%} ============ ANNOUNCEMENT BAR ============ {%- endcomment -%}
-  {%- if s.show_ann -%}
-    {%- assign ann_blocks = section.blocks | where: "type", "announcement_item" -%}
-    {%- if ann_blocks.size > 0 -%}
-      <div class="agc-ann">
-        <div class="agc-ann-track">
-          {%- for i in (1..2) -%}
-            {%- for b in ann_blocks -%}<span>{{ b.settings.text }}</span>{%- endfor -%}
+{%- comment -%} 1. ANNOUNCEMENT BAR {%- endcomment -%}
+<div class="agc-announce">
+  <div class="agc-marquee-track">
+    {%- assign ann_blocks = section.blocks | where: 'type', 'announcement_item' -%}
+    {%- for block in ann_blocks -%}
+      <span class="agc-marquee-item">{{ block.settings.text }}</span>
+    {%- endfor -%}
+    {%- for block in ann_blocks -%}
+      <span class="agc-marquee-item">{{ block.settings.text }}</span>
+    {%- endfor -%}
+    {%- if ann_blocks.size == 0 -%}
+      <span class="agc-marquee-item">Envío Gratis en Pedidos +$50</span>
+      <span class="agc-marquee-item">Filtración Avanzada 9-Etapas</span>
+      <span class="agc-marquee-item">Garantía 90 Días</span>
+      <span class="agc-marquee-item">+15,000 Clientes Satisfechos</span>
+      <span class="agc-marquee-item">Envío Gratis en Pedidos +$50</span>
+      <span class="agc-marquee-item">Filtración Avanzada 9-Etapas</span>
+      <span class="agc-marquee-item">Garantía 90 Días</span>
+      <span class="agc-marquee-item">+15,000 Clientes Satisfechos</span>
+    {%- endif -%}
+  </div>
+</div>
+
+{%- comment -%} 2. HERO / BUY BOX {%- endcomment -%}
+<section class="agc-hero">
+  <div class="agc-container">
+    <div class="agc-hero-grid">
+
+      {%- comment -%} LEFT: Gallery {%- endcomment -%}
+      <div class="agc-gallery agc-fade">
+        <div class="agc-gallery-main" id="agc-main-img-{{ uid }}">
+          {%- if section.settings.gallery_badge != blank -%}
+            <span class="agc-gallery-badge">{{ section.settings.gallery_badge }}</span>
+          {%- endif -%}
+          {%- if product.featured_image -%}
+            <img id="agc-hero-img-{{ uid }}" src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.title | escape }}" width="800" height="800">
+          {%- else -%}
+            <img id="agc-hero-img-{{ uid }}" src="{{ 'product-1' | placeholder_svg_tag }}" alt="Product">
+          {%- endif -%}
+        </div>
+        <div class="agc-thumbs" id="agc-thumbs-{{ uid }}">
+          {%- for image in product.images limit: 6 -%}
+            <div class="agc-thumb{% if forloop.first %} active{% endif %}" onclick="agcSetImg_{{ uid }}('{{ image | image_url: width: 800 }}', this)">
+              <img src="{{ image | image_url: width: 150 }}" alt="{{ image.alt | escape }}" width="150" height="150" loading="lazy">
+            </div>
           {%- endfor -%}
         </div>
       </div>
-    {%- endif -%}
-  {%- endif -%}
 
-  {%- comment -%} ============ HERO / BUY BOX ============ {%- endcomment -%}
-  <div class="agc-hero">
-    <div class="agc-wrap agc-hero-grid">
-
-      {%- comment -%} GALLERY {%- endcomment -%}
-      <div class="agc-gallery">
-        <div class="agc-main">
-          {%- if s.gallery_badge != blank -%}<span class="agc-gbadge">{{ s.gallery_badge }}</span>{%- endif -%}
-          {%- if product and product.media.size > 0 -%}
-            <img id="agc-main-{{ uid }}" src="{{ product.featured_media | image_url: width: 900 }}" width="{{ product.featured_media.width }}" height="{{ product.featured_media.height }}" loading="eager" alt="{{ product.title | escape }}">
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'agc-ph' }}
-          {%- endif -%}
-        </div>
-        {%- if product and product.media.size > 1 -%}
-          <div class="agc-thumbs">
-            {%- for media in product.media -%}
-              <button type="button" class="agc-thumb {% if forloop.first %}is-active{% endif %}"
-                      data-full="{{ media | image_url: width: 900 }}"
-                      onclick="agcThumb_{{ uid }}(this)">
-                <img src="{{ media | image_url: width: 160 }}" width="160" height="160" loading="lazy" alt="">
-              </button>
-            {%- endfor -%}
-          </div>
+      {%- comment -%} RIGHT: Buy Box {%- endcomment -%}
+      <div class="agc-buybox agc-fade" style="transition-delay:0.1s">
+        {%- if section.settings.product_tag != blank -%}
+          <div class="agc-tag-pill">{{ section.settings.product_tag }}</div>
         {%- endif -%}
-      </div>
 
-      {%- comment -%} INFO {%- endcomment -%}
-      <div class="agc-info">
-        {%- if s.product_tag != blank -%}<span class="agc-tag">{{ s.product_tag }}</span>{%- endif -%}
+        <h1 class="agc-product-title">
+          {%- assign title_parts = section.settings.title | split: '|' -%}
+          {%- if title_parts.size > 1 -%}
+            {{ title_parts[0] }}<em>{{ title_parts[1] }}</em>{% if title_parts.size > 2 %}{{ title_parts[2] }}{% endif %}
+          {%- else -%}
+            {{ section.settings.title | default: product.title }}
+          {%- endif -%}
+        </h1>
 
-        <h1 class="agc-title">{{ s.title | replace: '|', '<span class="em">' | append: '</span>' }}</h1>
-
-        {%- if s.show_rating -%}
+        {%- if section.settings.show_rating -%}
           <div class="agc-rating">
-            <span class="agc-stars">{{ s.rating_stars }}</span>
-            <strong>{{ s.rating_value }}</strong>
-            <span>· {{ s.rating_count }}</span>
+            <div class="agc-stars">
+              {%- assign rating_stars = section.settings.rating_stars | default: 5 -%}
+              {%- for i in (1..rating_stars) -%}★{%- endfor -%}
+            </div>
+            <span class="agc-rating-val">{{ section.settings.rating_value | default: '4.9' }}</span>
+            <span class="agc-rating-cnt">({{ section.settings.rating_count | default: '2,847' }} reseñas)</span>
           </div>
         {%- endif -%}
 
-        {%- if s.tagline != blank -%}<p class="agc-tagline">{{ s.tagline }}</p>{%- endif -%}
+        {%- if section.settings.tagline != blank -%}
+          <p class="agc-tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
 
-        <form id="agc-form-{{ uid }}" action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
-
-          {%- comment -%} PACK SELECTOR — driven by REAL product variants with live prices {%- endcomment -%}
-          {%- assign tiers = section.blocks | where: "type", "pricing_tier" -%}
-          {%- if product and product.variants.size > 0 -%}
-            <div class="agc-flabel">{{ s.tier_label }}</div>
-            <div class="agc-tiers" id="agc-tiers-{{ uid }}">
-              {%- for v in product.variants -%}
-                {%- assign t = tiers[forloop.index0] -%}
-                <label class="agc-tier {% if v == product.selected_or_first_available_variant %}is-active{% endif %}">
-                  <input type="radio" name="id" value="{{ v.id }}"
-                         {% if v == product.selected_or_first_available_variant %}checked{% endif %}
-                         {% unless v.available %}disabled{% endunless %}>
-                  {%- if t.settings.badge != blank -%}<span class="agc-tier-badge">{{ t.settings.badge }}</span>{%- endif -%}
-                  <span class="agc-tier-radio"></span>
-                  {%- if s.show_pack_img -%}
-                    {%- assign tier_img = v.image | default: product.featured_media -%}
-                    {%- if tier_img -%}<img class="agc-tier-img" src="{{ tier_img | image_url: width: 140 }}" width="60" height="60" loading="lazy" alt="">{%- endif -%}
+        {%- comment -%} Pricing tiers {%- endcomment -%}
+        {%- assign tier_blocks = section.blocks | where: 'type', 'pricing_tier' -%}
+        {%- if tier_blocks.size > 0 -%}
+          <div class="agc-tier-label">{{ section.settings.tier_label | default: 'Elige tu pack' }}</div>
+          <div class="agc-tiers" id="agc-tiers-{{ uid }}">
+            {%- for block in tier_blocks -%}
+              {%- assign variant = product.variants[forloop.index0] -%}
+              <div class="agc-tier-card{% if forloop.first %} selected{% endif %}"
+                   onclick="agcSelectTier_{{ uid }}(this, '{{ variant.id }}')"
+                   data-variant-id="{{ variant.id }}"
+                   data-price="{{ variant.price | money_without_trailing_zeros }}"
+                   {{ block.shopify_attributes }}>
+                {%- if block.settings.badge != blank -%}
+                  <span class="agc-tier-badge">{{ block.settings.badge }}</span>
+                {%- endif -%}
+                <div class="agc-tier-radio"></div>
+                <div class="agc-tier-info">
+                  <div class="agc-tier-name">{{ block.settings.name }}</div>
+                  {%- if block.settings.unit_note != blank -%}
+                    <div class="agc-tier-unit">{{ block.settings.unit_note }}</div>
                   {%- endif -%}
-                  <div class="agc-tier-body">
-                    <div class="agc-tier-name">{{ t.settings.name | default: v.title }}
-                      {%- if t.settings.savings != blank -%}<span class="agc-save">{{ t.settings.savings }}</span>{%- endif -%}
-                    </div>
-                    {%- if t.settings.sub != blank -%}<div class="agc-tier-sub">{{ t.settings.sub }}</div>
-                    {%- else -%}<div class="agc-tier-sub">{{ v.title }}</div>{%- endif -%}
-                  </div>
-                  <div class="agc-tier-price">
-                    <div class="agc-tier-each">{{ v.price | money }}</div>
-                    {%- if v.compare_at_price > v.price -%}
-                      <div class="agc-tier-unit"><s>{{ v.compare_at_price | money }}</s></div>
-                    {%- elsif t.settings.unit_note != blank -%}
-                      <div class="agc-tier-unit">{{ t.settings.unit_note }}</div>
-                    {%- endif -%}
-                  </div>
-                </label>
-              {%- endfor -%}
-            </div>
-          {%- endif -%}
-
-          {%- comment -%} QUANTITY {%- endcomment -%}
-          <div class="agc-qty">
-            <button type="button" onclick="agcQty_{{ uid }}(-1)">−</button>
-            <input type="number" name="quantity" id="agc-qty-{{ uid }}" value="1" min="1">
-            <button type="button" onclick="agcQty_{{ uid }}(1)">+</button>
-          </div>
-
-          {%- comment -%} CTA {%- endcomment -%}
-          {%- if product and product.available -%}
-            <button type="submit" class="agc-cta" id="agc-cta-{{ uid }}">{{ s.cta_text }}</button>
-          {%- else -%}
-            <button type="button" class="agc-cta" disabled>{{ s.sold_out_text }}</button>
-          {%- endif -%}
-        </form>
-
-        {%- if s.delivery_text != blank -%}<p class="agc-delivery">{{ s.delivery_text }}</p>{%- endif -%}
-
-        {%- comment -%} URGENCY {%- endcomment -%}
-        {%- if s.show_urgency -%}
-          <div class="agc-urgency">
-            <div class="agc-urgency-top">
-              <span>{{ s.urgency_title }}</span><span>{{ s.urgency_percent }}%</span>
-            </div>
-            <div class="agc-urgency-bar"><div class="agc-urgency-fill" style="width:{{ s.urgency_percent }}%"></div></div>
-            <div class="agc-urgency-note">{{ s.urgency_note }}</div>
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} TRUST BADGES {%- endcomment -%}
-        {%- assign trust = section.blocks | where: "type", "trust_badge" -%}
-        {%- if trust.size > 0 -%}
-          <div class="agc-trust">
-            {%- for b in trust -%}
-              <span class="agc-trust-item"><span class="ic">{{ b.settings.icon }}</span>{{ b.settings.label }}</span>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-
-        {%- comment -%} TIMELINE {%- endcomment -%}
-        {%- assign tl = section.blocks | where: "type", "timeline_item" -%}
-        {%- if tl.size > 0 -%}
-          <div class="agc-timeline">
-            <div class="agc-flabel">{{ s.timeline_label }}</div>
-            {%- for b in tl -%}
-              <div class="agc-tl-row"><span class="agc-tl-dot"></span>
-                <div><b>{{ b.settings.week }}</b> <span>{{ b.settings.description }}</span></div>
+                  {%- if block.settings.sub != blank -%}
+                    <div class="agc-tier-sub">{{ block.settings.sub }}</div>
+                  {%- endif -%}
+                </div>
+                <div class="agc-tier-price">
+                  <div class="agc-tier-amount">{{ variant.price | money_without_trailing_zeros }}</div>
+                  {%- if block.settings.savings != blank -%}
+                    <div class="agc-tier-savings">{{ block.settings.savings }}</div>
+                  {%- endif -%}
+                </div>
               </div>
             {%- endfor -%}
           </div>
         {%- endif -%}
 
-        {%- comment -%} PAYMENTS {%- endcomment -%}
-        {%- assign pays = section.blocks | where: "type", "payment_method" -%}
-        {%- if pays.size > 0 -%}
-          <div class="agc-pay">
-            <span>{{ s.pay_label }}</span>
-            {%- for b in pays -%}
-              {%- if b.settings.logo -%}
-                <img src="{{ b.settings.logo | image_url: width: 120 }}" width="{{ b.settings.logo.width }}" height="{{ b.settings.logo.height }}" loading="lazy" alt="{{ b.settings.name }}">
-              {%- else -%}
-                <span>{{ b.settings.name }}</span>
+        {%- comment -%} Quantity + ATC form {%- endcomment -%}
+        <form id="agc-form-{{ uid }}" method="post" action="{{ routes.cart_add_url }}">
+          <input type="hidden" name="form_type" value="product">
+          <input type="hidden" name="utf8" value="✓">
+          <input type="hidden" id="agc-variant-{{ uid }}" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <input type="hidden" id="agc-qty-hidden-{{ uid }}" name="quantity" value="1">
+
+          <div class="agc-qty-row">
+            <span class="agc-qty-label">Cantidad</span>
+            <div class="agc-qty-ctrl">
+              <button type="button" class="agc-qty-btn" onclick="agcQty_{{ uid }}(-1)">−</button>
+              <span class="agc-qty-val" id="agc-qty-disp-{{ uid }}">1</span>
+              <button type="button" class="agc-qty-btn" onclick="agcQty_{{ uid }}(1)">+</button>
+            </div>
+          </div>
+
+          <button type="submit" class="agc-atc-btn" id="agc-atc-{{ uid }}">
+            {{ section.settings.cta_text | default: 'Agregar al Carrito' }}
+          </button>
+        </form>
+
+        {%- if section.settings.delivery_text != blank -%}
+          <p class="agc-delivery">{{ section.settings.delivery_text }}</p>
+        {%- endif -%}
+
+        {%- comment -%} Urgency bar {%- endcomment -%}
+        {%- if section.settings.show_urgency -%}
+          <div class="agc-urgency">
+            <div class="agc-urgency-head">
+              <span>{{ section.settings.urgency_title | default: '¡Quedan pocos en stock!' }}</span>
+              <span>{{ section.settings.urgency_percent | default: 72 }}% vendido</span>
+            </div>
+            <div class="agc-urgency-bar-outer">
+              <div class="agc-urgency-bar-inner" style="width: {{ section.settings.urgency_percent | default: 72 }}%"></div>
+            </div>
+            {%- if section.settings.urgency_note != blank -%}
+              <div class="agc-urgency-note">{{ section.settings.urgency_note }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Trust badges {%- endcomment -%}
+        {%- assign badge_blocks = section.blocks | where: 'type', 'trust_badge' -%}
+        {%- if badge_blocks.size > 0 -%}
+          <div class="agc-badges">
+            {%- for block in badge_blocks -%}
+              <div class="agc-badge" {{ block.shopify_attributes }}>
+                <span class="agc-badge-icon">{{ block.settings.icon }}</span>
+                <span>{{ block.settings.label }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Timeline {%- endcomment -%}
+        {%- assign tl_blocks = section.blocks | where: 'type', 'timeline_item' -%}
+        {%- if tl_blocks.size > 0 -%}
+          {%- if section.settings.timeline_label != blank -%}
+            <div class="agc-timeline-label">{{ section.settings.timeline_label }}</div>
+          {%- endif -%}
+          <div class="agc-timeline">
+            {%- for block in tl_blocks -%}
+              <div class="agc-tl-item" {{ block.shopify_attributes }}>
+                <div class="agc-tl-week">{{ block.settings.week }}</div>
+                <div class="agc-tl-desc">{{ block.settings.description }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Payment logos {%- endcomment -%}
+        {%- assign pay_blocks = section.blocks | where: 'type', 'payment_method' -%}
+        {%- if pay_blocks.size > 0 or section.settings.pay_label != blank -%}
+          <div class="agc-pay-label">{{ section.settings.pay_label | default: 'Pago seguro con' }}</div>
+          <div class="agc-pay-logos">
+            {%- if pay_blocks.size > 0 -%}
+              {%- for block in pay_blocks -%}
+                {%- if block.settings.logo != blank -%}
+                  <img class="agc-pay-logo" src="{{ block.settings.logo | image_url: height: 56 }}" alt="{{ block.settings.name | escape }}" height="28" loading="lazy" {{ block.shopify_attributes }}>
+                {%- else -%}
+                  <span class="agc-pay-pill" {{ block.shopify_attributes }}>{{ block.settings.name }}</span>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- else -%}
+              <span class="agc-pay-pill">Visa</span>
+              <span class="agc-pay-pill">Mastercard</span>
+              <span class="agc-pay-pill">PayPal</span>
+              <span class="agc-pay-pill">Shop Pay</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+      </div>{%- comment -%} end buybox {%- endcomment -%}
+    </div>{%- comment -%} end hero-grid {%- endcomment -%}
+  </div>
+</section>
+
+{%- comment -%} 3. UGC MASONRY {%- endcomment -%}
+<section class="agc-ugc agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.ugc_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.ugc_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.ugc_title | default: 'Vidas Reales Transformadas' }}</h2>
+    {%- assign ugc_blocks = section.blocks | where: 'type', 'ugc_photo' -%}
+    {%- if ugc_blocks.size > 0 -%}
+      <div class="agc-masonry" id="agc-masonry-{{ uid }}">
+        {%- for block in ugc_blocks -%}
+          <div class="agc-ugc-card{% if forloop.index > 8 %} agc-ugc-hidden{% endif %}" {{ block.shopify_attributes }}>
+            {%- if block.settings.photo != blank -%}
+              <img src="{{ block.settings.photo | image_url: width: 400 }}" alt="{{ block.settings.name | escape }}" width="400" loading="lazy">
+            {%- else -%}
+              <div style="background:var(--pale);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:40px;">📸</div>
+            {%- endif -%}
+            <div class="agc-ugc-overlay">
+              <div class="agc-ugc-stars">★★★★★</div>
+              {%- if block.settings.quote != blank -%}
+                <p class="agc-ugc-quote">"{{ block.settings.quote }}"</p>
               {%- endif -%}
+              <div class="agc-ugc-author">{{ block.settings.name }}{%- if block.settings.location != blank -%} · {{ block.settings.location }}{%- endif -%}</div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if ugc_blocks.size > 8 -%}
+        <button class="agc-show-more" id="agc-ugc-more-{{ uid }}" onclick="agcShowMore_{{ uid }}()">
+          {{ section.settings.ugc_more_label | default: 'Ver más historias' }}
+        </button>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} 4. BENEFITS {%- endcomment -%}
+<section class="agc-benefits agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.ben_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.ben_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.ben_title | default: 'Lo Que Experimentarás' }}</h2>
+    {%- assign ben_blocks = section.blocks | where: 'type', 'benefit' -%}
+    {%- if ben_blocks.size > 0 -%}
+      <div class="agc-bens-grid">
+        {%- for block in ben_blocks -%}
+          <div class="agc-ben-card agc-fade" style="transition-delay:{{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon_img != blank -%}
+              <img class="agc-ben-img" src="{{ block.settings.icon_img | image_url: width: 600 }}" alt="{{ block.settings.title | escape }}" width="600" loading="lazy">
+            {%- elsif block.settings.emoji != blank -%}
+              <div style="background:var(--pale);aspect-ratio:4/3;display:flex;align-items:center;justify-content:center;font-size:64px;">{{ block.settings.emoji }}</div>
+            {%- endif -%}
+            <div class="agc-ben-body">
+              {%- if block.settings.emoji != blank and block.settings.icon_img == blank -%}{%- endif -%}
+              <div class="agc-ben-title">{{ block.settings.title }}</div>
+              {%- if block.settings.description != blank -%}
+                <p class="agc-ben-desc">{{ block.settings.description }}</p>
+              {%- endif -%}
+              {%- if block.settings.stat_number != blank -%}
+                <div class="agc-ben-stat">{{ block.settings.stat_number }}</div>
+                {%- if block.settings.stat_label != blank -%}
+                  <div class="agc-ben-stat-label">{{ block.settings.stat_label }}</div>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} 5. MEDIA MARQUEE {%- endcomment -%}
+<div class="agc-media-marquee">
+  <div class="agc-media-track">
+    {%- assign mq_blocks = section.blocks | where: 'type', 'marquee_item' -%}
+    {%- for block in mq_blocks -%}
+      <span class="agc-media-item" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+    {%- endfor -%}
+    {%- for block in mq_blocks -%}
+      <span class="agc-media-item" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+    {%- endfor -%}
+    {%- if mq_blocks.size == 0 -%}
+      <span class="agc-media-item">CNN</span>
+      <span class="agc-media-item">Forbes</span>
+      <span class="agc-media-item">Business Insider</span>
+      <span class="agc-media-item">Healthline</span>
+      <span class="agc-media-item">WebMD</span>
+      <span class="agc-media-item">CNN</span>
+      <span class="agc-media-item">Forbes</span>
+      <span class="agc-media-item">Business Insider</span>
+      <span class="agc-media-item">Healthline</span>
+      <span class="agc-media-item">WebMD</span>
+    {%- endif -%}
+  </div>
+</div>
+{%- comment -%} 6. PROBLEM SECTION {%- endcomment -%}
+{%- if section.settings.show_problem -%}
+<section class="agc-problem agc-fade">
+  <div class="agc-container">
+    <div class="agc-prob-grid">
+      <div class="agc-prob-img">
+        {%- if section.settings.prob_image != blank -%}
+          <img src="{{ section.settings.prob_image | image_url: width: 700 }}" alt="{{ section.settings.prob_title | escape }}" width="700" loading="lazy">
+        {%- else -%}
+          <div style="background:rgba(255,255,255,0.05);width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:80px;">🚿</div>
+        {%- endif -%}
+      </div>
+      <div class="agc-prob-content">
+        {%- if section.settings.prob_eyebrow != blank -%}
+          <div class="agc-prob-eyebrow">{{ section.settings.prob_eyebrow }}</div>
+        {%- endif -%}
+        <h2 class="agc-prob-title">{{ section.settings.prob_title | default: 'Tu Agua No Es Segura' }}</h2>
+        {%- if section.settings.prob_intro != blank -%}
+          <p class="agc-prob-intro">{{ section.settings.prob_intro }}</p>
+        {%- endif -%}
+        {%- assign ps_blocks = section.blocks | where: 'type', 'problem_stat' -%}
+        {%- if ps_blocks.size > 0 -%}
+          <div class="agc-prob-stats">
+            {%- for block in ps_blocks -%}
+              <div class="agc-prob-stat" {{ block.shopify_attributes }}>
+                <div class="agc-prob-num agc-countup" data-target="{{ block.settings.number | remove: '%' | remove: 'x' | remove: '+' }}">{{ block.settings.number }}</div>
+                <div class="agc-prob-label">{{ block.settings.label }}</div>
+              </div>
             {%- endfor -%}
           </div>
         {%- endif -%}
       </div>
     </div>
   </div>
+</section>
+{%- endif -%}
 
-  {%- comment -%} ============ SPECS (OVERVIEW / DESIGN / INCLUDED) ============ {%- endcomment -%}
-  {%- assign ovps = section.blocks | where: "type", "overview_point" -%}
-  {%- assign sgroups = section.blocks | where: "type", "spec_group" -%}
-  {%- assign incs = section.blocks | where: "type", "included_item" -%}
-  {%- assign has_specs = false -%}
-  {%- if ovps.size > 0 or sgroups.size > 0 or incs.size > 0 -%}{%- assign has_specs = true -%}{%- endif -%}
-  {%- if s.show_specs and has_specs -%}
-    <div class="agc-sec alt">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.specs_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.specs_title }}</h2>
-        </div>
-        {%- if ovps.size > 0 -%}
-          <div class="agc-specs-block" style="max-width:760px;margin:0 auto 40px">
-            <h3>{{ s.specs_overview_title }}</h3>
-            {%- for b in ovps -%}
-              <div class="agc-ovp"><span class="ck">✓</span>
-                <div><b>{{ b.settings.title }}</b><span>{{ b.settings.description }}</span></div>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-        {%- if sgroups.size > 0 -%}
-          <div class="agc-specs-grid">
-            {%- for b in sgroups -%}
-              <div class="agc-specs-block">
-                <div class="agc-spec-title">{{ b.settings.title }}</div>
-                <ul class="agc-speclist">
-                  {%- assign rows = b.settings.lines | newline_to_br | split: '<br />' -%}
-                  {%- for r in rows -%}{%- assign rr = r | strip -%}{%- if rr != blank -%}<li>{{ rr }}</li>{%- endif -%}{%- endfor -%}
-                </ul>
-              </div>
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
-        {%- if incs.size > 0 -%}
-          <div class="agc-specs-block" style="max-width:760px;margin:32px auto 0">
-            <h3>{{ s.specs_included_title }}</h3>
-            <ul class="agc-speclist">
-              {%- for b in incs -%}<li>{{ b.settings.text }}</li>{%- endfor -%}
-            </ul>
-          </div>
-        {%- endif -%}
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ MARQUEE ============ {%- endcomment -%}
-  {%- assign mq = section.blocks | where: "type", "marquee_item" -%}
-  {%- if mq.size > 0 -%}
-    <div class="agc-ann" style="margin-top:32px">
-      <div class="agc-ann-track">
-        {%- for i in (1..2) -%}{%- for b in mq -%}<span>{{ b.settings.text }}</span>{%- endfor -%}{%- endfor -%}
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ UGC PHOTO GRID ============ {%- endcomment -%}
-  {%- assign ugc_items = section.blocks | where: "type", "ugc_photo" -%}
-  {%- if ugc_items.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.ugc_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.ugc_title }}</h2>
-        </div>
-        <div class="agc-ugc-grid">
-          {%- for b in ugc_items -%}
-            <div class="agc-ugc-card{% if forloop.index > 8 %} agc-ugc-hidden{% endif %}" data-ugc>
-              {%- if b.settings.photo -%}
-                <img src="{{ b.settings.photo | image_url: width: 600 }}" loading="lazy" alt="{{ b.settings.name | escape }}">
-                <div class="agc-ugc-overlay">
-                  <span class="agc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                  {%- if b.settings.quote != blank -%}<p class="agc-ugc-quote">{{ b.settings.quote | truncate: 100 }}</p>{%- endif -%}
-                  {%- if b.settings.name != blank -%}<div class="agc-ugc-author">&mdash; {{ b.settings.name }}{% if b.settings.location != blank %}, {{ b.settings.location }}{% endif %}</div>{%- endif -%}
-                </div>
-              {%- else -%}
-                <div class="agc-ugc-ph"></div>
-                <div class="agc-ugc-inline">
-                  <span class="agc-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                  {%- if b.settings.quote != blank -%}<p class="agc-ugc-quote">&ldquo;{{ b.settings.quote }}&rdquo;</p>{%- endif -%}
-                  {%- if b.settings.name != blank -%}<div class="agc-ugc-author">&mdash; {{ b.settings.name }}{% if b.settings.location != blank %}, {{ b.settings.location }}{% endif %}</div>{%- endif -%}
-                </div>
-              {%- endif -%}
+{%- comment -%} 7. FILTRATION / CIRCULAR STATS {%- endcomment -%}
+<section class="agc-filtration agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.filt_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.filt_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.filt_title | default: 'Filtración de Primera Clase' }}</h2>
+    {%- assign filt_blocks = section.blocks | where: 'type', 'filtration_stat' -%}
+    {%- if filt_blocks.size > 0 -%}
+      <div class="agc-rings-grid">
+        {%- for block in filt_blocks -%}
+          {%- assign pct = block.settings.percent | default: 90 -%}
+          <div class="agc-ring-wrap agc-fade" style="transition-delay:{{ forloop.index0 | times: 0.15 }}s" {{ block.shopify_attributes }}>
+            <div class="agc-ring">
+              <svg viewBox="0 0 120 120" width="160" height="160">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10"/>
+                <circle class="agc-ring-arc" cx="60" cy="60" r="50" fill="none" stroke="#fff" stroke-width="10"
+                  stroke-dasharray="314.16" stroke-dashoffset="314.16"
+                  stroke-linecap="round" transform="rotate(-90 60 60)"
+                  data-pct="{{ pct }}"/>
+              </svg>
+              <div class="agc-ring-num">{{ pct }}%</div>
             </div>
-          {%- endfor -%}
-        </div>
-        {%- if ugc_items.size > 8 -%}
-          <button class="agc-ugc-more" onclick="agcUgcMore_{{ uid }}(this)">{{ s.ugc_more_label | default: "Ver más resultados" }}</button>
-        {%- endif -%}
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ FEATURE CARDS ============ {%- endcomment -%}
-  {%- assign fcards = section.blocks | where: "type", "feature_card" -%}
-  {%- if fcards.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.feat_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.feat_title }}</h2>
-        </div>
-        <div class="agc-features">
-          {%- for b in fcards -%}
-            <div class="agc-fcard">
-              {%- if b.settings.icon_img -%}<img src="{{ b.settings.icon_img | image_url: width: 120 }}" width="{{ b.settings.icon_img.width }}" height="{{ b.settings.icon_img.height }}" loading="lazy" alt="">
-              {%- else -%}<div class="ic">{{ b.settings.icon }}</div>{%- endif -%}
-              <h3>{{ b.settings.title }}</h3>
-              <p>{{ b.settings.description }}</p>
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ PROBLEM ("TU AGUA NO ES SEGURA") ============ {%- endcomment -%}
-  {%- assign pstats = section.blocks | where: "type", "problem_stat" -%}
-  {%- if s.show_problem and pstats.size > 0 -%}
-    <div class="agc-sec dark">
-      <div class="agc-wrap">
-        <div class="agc-problem-grid">
-          <div class="agc-problem-img">
-            {%- if s.prob_image -%}
-              <img src="{{ s.prob_image | image_url: width: 900 }}" width="{{ s.prob_image.width }}" height="{{ s.prob_image.height }}" loading="lazy" alt="">
+            <div class="agc-ring-label">{{ block.settings.label }}</div>
+            {%- if block.settings.sublabel != blank -%}
+              <div class="agc-ring-sublabel">{{ block.settings.sublabel }}</div>
             {%- endif -%}
-          </div>
-          <div>
-            <p class="eyebrow">{{ s.prob_eyebrow }}</p>
-            <h2 class="agc-sec-title" style="text-align:left">{{ s.prob_title }}</h2>
-            {%- if s.prob_intro != blank -%}<p class="agc-problem-intro">{{ s.prob_intro }}</p>{%- endif -%}
-            {%- for b in pstats -%}
-              <div class="agc-pstat">
-                <div class="agc-pstat-num">{{ b.settings.number }}</div>
-                <div class="agc-pstat-label">{{ b.settings.label }}</div>
-              </div>
-            {%- endfor -%}
-          </div>
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ CAUSES ("LO QUE CAUSA EL AGUA SIN FILTRAR") ============ {%- endcomment -%}
-  {%- assign causes = section.blocks | where: "type", "cause_card" -%}
-  {%- if causes.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.causes_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.causes_title }}</h2>
-        </div>
-        <div class="agc-causes">
-          {%- for b in causes -%}
-            <div class="agc-cause">
-              <div class="agc-cause-img">
-                {%- if b.settings.image -%}<img src="{{ b.settings.image | image_url: width: 500 }}" width="{{ b.settings.image.width }}" height="{{ b.settings.image.height }}" loading="lazy" alt="">{%- endif -%}
-              </div>
-              <div class="agc-cause-body">
-                <h3>{{ b.settings.title }}</h3>
-                <p>{{ b.settings.description }}</p>
-              </div>
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ BENEFITS ("YOU'LL EXPERIENCE") ============ {%- endcomment -%}
-  {%- assign benefits = section.blocks | where: "type", "benefit" -%}
-  {%- if benefits.size > 0 -%}
-    <div class="agc-sec alt">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.ben_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.ben_title }}</h2>
-        </div>
-        <div class="agc-benefits">
-          {%- for b in benefits -%}
-            <div class="agc-benefit">
-              {%- if b.settings.icon_img -%}<img src="{{ b.settings.icon_img | image_url: width: 140 }}" width="{{ b.settings.icon_img.width }}" height="{{ b.settings.icon_img.height }}" loading="lazy" alt="">
-              {%- else -%}<div class="ic">{{ b.settings.emoji }}</div>{%- endif -%}
-              <h3>{{ b.settings.title }}</h3>
-              <p>{{ b.settings.description }}</p>
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ STATS ============ {%- endcomment -%}
-  {%- assign stats = section.blocks | where: "type", "stat" -%}
-  {%- if stats.size > 0 -%}
-    <div class="agc-sec accent">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <h2 class="agc-sec-title">{{ s.stat_title }}</h2>
-        </div>
-        <div class="agc-stats">
-          {%- for b in stats -%}
-            <div><div class="agc-stat-num">{{ b.settings.number }}</div>
-              <div class="agc-stat-label">{{ b.settings.label }}</div></div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ ENDORSEMENT / AVAL ============ {%- endcomment -%}
-  {%- if s.show_aval -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-aval">
-          <div class="agc-aval-img">
-            {%- if s.av_image -%}<img src="{{ s.av_image | image_url: width: 600 }}" width="{{ s.av_image.width }}" height="{{ s.av_image.height }}" loading="lazy" alt="{{ s.av_name | escape }}">{%- endif -%}
-          </div>
-          <div>
-            {%- if s.av_eyebrow != blank -%}<p class="eyebrow">{{ s.av_eyebrow }}</p>{%- endif -%}
-            <h2>{{ s.av_title }}</h2>
-            {%- if s.av_quote != blank -%}<p class="agc-aval-quote">“{{ s.av_quote }}”</p>{%- endif -%}
-            {%- if s.av_name != blank -%}<div class="agc-aval-name">{{ s.av_name }}</div>{%- endif -%}
-            {%- if s.av_role != blank -%}<div class="agc-aval-role">{{ s.av_role }}</div>{%- endif -%}
-          </div>
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ COMPARISON ============ {%- endcomment -%}
-  {%- assign cmp = section.blocks | where: "type", "comparison_row" -%}
-  {%- if cmp.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.cmp_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.cmp_title }}</h2>
-        </div>
-        <div class="agc-cmp">
-          <div class="agc-cmp-head">
-            <div class="f">{{ s.cmp_feature_head }}</div>
-            <div class="us">{{ s.cmp_col1 }}</div>
-            <div class="them">{{ s.cmp_col2 }}</div>
-          </div>
-          {%- for b in cmp -%}
-            <div class="agc-cmp-row">
-              <div class="f"><b>{{ b.settings.feature }}</b><span>{{ b.settings.sub }}</span></div>
-              <div class="us">{% if b.settings.col1_yes %}<span class="agc-yes">✓</span>{% else %}<span class="agc-no">✕</span>{% endif %}</div>
-              <div class="them">{% if b.settings.col2_yes %}<span class="agc-yes">✓</span>{% else %}<span class="agc-no">✕</span>{% endif %}</div>
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ FILTER LAYERS (TABS) ============ {%- endcomment -%}
-  {%- assign layers = section.blocks | where: "type", "filter_layer" -%}
-  {%- if layers.size > 0 -%}
-    <div class="agc-sec alt">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.ft_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.ft_title }}</h2>
-          {%- if s.ft_subtitle != blank -%}<p class="agc-sec-sub">{{ s.ft_subtitle }}</p>{%- endif -%}
-        </div>
-        <div class="agc-tabs">
-          {%- for b in layers -%}
-            <button type="button" class="agc-tab {% if forloop.first %}is-active{% endif %}"
-                    onclick="agcTab_{{ uid }}({{ forloop.index0 }})">{{ b.settings.tab_name }}</button>
-          {%- endfor -%}
-        </div>
-        {%- for b in layers -%}
-          <div class="agc-layer {% if forloop.first %}is-active{% endif %}" data-layer="{{ forloop.index0 }}">
-            {%- if b.settings.layer_badge != blank -%}<span class="agc-layer-badge">{{ b.settings.layer_badge }}</span>{%- endif -%}
-            <h3>{{ b.settings.tab_name }}</h3>
-            {%- if b.settings.color_hint != blank -%}<div class="hint">{{ b.settings.color_hint }}</div>{%- endif -%}
-            <p>{{ b.settings.description }}</p>
           </div>
         {%- endfor -%}
       </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ BEFORE / AFTER ============ {%- endcomment -%}
-  {%- assign bas = section.blocks | where: "type", "before_after" -%}
-  {%- if bas.size > 0 -%}
-    <div class="agc-sec alt">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.ba_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.ba_title }}</h2>
-        </div>
-        <div class="agc-ba-grid">
-          {%- for b in bas -%}
-            <div class="agc-ba">
-              <figure><span>{{ s.ba_before_label }}</span>
-                {%- if b.settings.before_image -%}<img src="{{ b.settings.before_image | image_url: width: 700 }}" width="{{ b.settings.before_image.width }}" height="{{ b.settings.before_image.height }}" loading="lazy" alt="">{%- else -%}<div class="ph"></div>{%- endif -%}
-              </figure>
-              <figure><span>{{ s.ba_after_label }}</span>
-                {%- if b.settings.after_image -%}<img src="{{ b.settings.after_image | image_url: width: 700 }}" width="{{ b.settings.after_image.width }}" height="{{ b.settings.after_image.height }}" loading="lazy" alt="">{%- else -%}<div class="ph"></div>{%- endif -%}
-              </figure>
+    {%- else -%}
+      <div class="agc-rings-grid">
+        {%- assign default_rings = '99,Cloro eliminado,Agua más suave para tu piel|86,Metales pesados filtrados,Plomo · Mercurio · Arsénico|94,Bacterias reducidas,Ambiente de ducha más limpio' | split: '|' -%}
+        {%- for ring in default_rings -%}
+          {%- assign rp = ring | split: ',' -%}
+          {%- assign rpct = rp[0] | plus: 0 -%}
+          <div class="agc-ring-wrap agc-fade" style="transition-delay:{{ forloop.index0 | times: 0.15 }}s">
+            <div class="agc-ring">
+              <svg viewBox="0 0 120 120" width="160" height="160">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="10"/>
+                <circle class="agc-ring-arc" cx="60" cy="60" r="50" fill="none" stroke="#fff" stroke-width="10"
+                  stroke-dasharray="314.16" stroke-dashoffset="314.16"
+                  stroke-linecap="round" transform="rotate(-90 60 60)"
+                  data-pct="{{ rpct }}"/>
+              </svg>
+              <div class="agc-ring-num">{{ rpct }}%</div>
             </div>
-          {%- endfor -%}
+            <div class="agc-ring-label">{{ rp[1] }}</div>
+            <div class="agc-ring-sublabel">{{ rp[2] }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} 8. ENDORSEMENT {%- endcomment -%}
+{%- if section.settings.show_aval -%}
+<section class="agc-endorsement agc-fade">
+  <div class="agc-container">
+    <div class="agc-aval-grid">
+      <div class="agc-aval-content">
+        {%- if section.settings.av_eyebrow != blank -%}
+          <div class="agc-aval-eyebrow">{{ section.settings.av_eyebrow }}</div>
+        {%- endif -%}
+        <h2 class="agc-aval-title">{{ section.settings.av_title | default: 'Respaldado por Expertos en Salud' }}</h2>
+        {%- if section.settings.av_quote != blank -%}
+          <p class="agc-aval-quote">"{{ section.settings.av_quote }}"</p>
+        {%- endif -%}
+        <div class="agc-aval-name">{{ section.settings.av_name | default: 'Dr. Carlos Méndez' }}</div>
+        <div class="agc-aval-role">{{ section.settings.av_role | default: 'Especialista en Salud Hídrica' }}</div>
+        {%- if section.settings.av_cta_text != blank -%}
+          <a class="agc-aval-cta" href="{{ section.settings.av_cta_url | default: '#' }}">{{ section.settings.av_cta_text }}</a>
+        {%- endif -%}
+      </div>
+      <div>
+        <div class="agc-aval-img-wrap">
+          {%- if section.settings.av_image != blank -%}
+            <img src="{{ section.settings.av_image | image_url: width: 600 }}" alt="{{ section.settings.av_name | escape }}" width="600" loading="lazy">
+          {%- else -%}
+            <div style="background:var(--pale);width:100%;height:100%;min-height:400px;display:flex;align-items:center;justify-content:center;font-size:80px;">👨‍⚕️</div>
+          {%- endif -%}
+          {%- if section.settings.av_name != blank -%}
+            <div class="agc-aval-banner">{{ section.settings.av_name | upcase }}</div>
+          {%- endif -%}
         </div>
-        {%- if s.ba_note != blank -%}<p class="agc-ba-note">{{ s.ba_note }}</p>{%- endif -%}
       </div>
     </div>
-  {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
 
-  {%- comment -%} ============ VIDEO TESTIMONIALS ============ {%- endcomment -%}
-  {%- assign vids = section.blocks | where: "type", "video_item" -%}
-  {%- if vids.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.vid_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.vid_title }}</h2>
-        </div>
-        <div class="agc-videos">
-          {%- for b in vids -%}
-            <div class="agc-video">
-              {%- if b.settings.video != blank -%}
-                {{ b.settings.video | video_tag: image_size: "400x", loop: true, controls: true, muted: true }}
-              {%- elsif b.settings.poster -%}
-                <img src="{{ b.settings.poster | image_url: width: 500 }}" width="{{ b.settings.poster.width }}" height="{{ b.settings.poster.height }}" loading="lazy" alt="">
-                <div class="play"><span>▶</span></div>
-              {%- else -%}
-                <div class="play"><span>▶</span></div>
-              {%- endif -%}
-              {%- if b.settings.label != blank -%}<div class="vlabel">{{ b.settings.label }}</div>{%- endif -%}
-            </div>
-          {%- endfor -%}
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
-
-  {%- comment -%} ============ TESTIMONIALS ============ {%- endcomment -%}
-  {%- assign tcards = section.blocks | where: "type", "testimonial" -%}
-  {%- if tcards.size > 0 -%}
-    <div class="agc-sec">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.tc_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.tc_title }}</h2>
-        </div>
-        <div class="agc-tcards">
-          {%- for b in tcards -%}
-            <div class="agc-tcard">
-              <div class="agc-tcard-top">
-                <div class="agc-tcard-av">{{ b.settings.avatar_emoji }}</div>
-                <div><div class="agc-tcard-name">{{ b.settings.name }}</div>
-                  <div class="agc-tcard-role">{{ b.settings.role }}</div></div>
+{%- comment -%} 9. BEFORE / AFTER {%- endcomment -%}
+<section class="agc-before-after agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.ba_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.ba_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.ba_title | default: 'Resultados que Cambian la Vida' }}</h2>
+    {%- assign ba_blocks = section.blocks | where: 'type', 'before_after' -%}
+    {%- if ba_blocks.size > 0 -%}
+      <div class="agc-ba-grid">
+        {%- for block in ba_blocks -%}
+          <div class="agc-ba-pair agc-fade" style="transition-delay:{{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            <div class="agc-ba-images">
+              <div class="agc-ba-side">
+                {%- if block.settings.before_image != blank -%}
+                  <img src="{{ block.settings.before_image | image_url: width: 400 }}" alt="{{ section.settings.ba_before_label | default: 'Antes' }}" width="400" loading="lazy">
+                {%- else -%}
+                  <div style="background:var(--pale);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;">Antes</div>
+                {%- endif -%}
+                <span class="agc-ba-label">{{ section.settings.ba_before_label | default: 'Antes' }}</span>
               </div>
-              <span class="agc-stars">★★★★★</span>
-              <p>“{{ b.settings.quote }}”</p>
+              <div class="agc-ba-side">
+                {%- if block.settings.after_image != blank -%}
+                  <img src="{{ block.settings.after_image | image_url: width: 400 }}" alt="{{ section.settings.ba_after_label | default: 'Después' }}" width="400" loading="lazy">
+                {%- else -%}
+                  <div style="background:var(--pale);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;">Después</div>
+                {%- endif -%}
+                <span class="agc-ba-label">{{ section.settings.ba_after_label | default: 'Después' }}</span>
+              </div>
             </div>
-          {%- endfor -%}
-        </div>
+          </div>
+        {%- endfor -%}
       </div>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+    {%- if section.settings.ba_note != blank -%}
+      <p class="agc-ba-note">{{ section.settings.ba_note }}</p>
+    {%- endif -%}
+  </div>
+</section>
 
-  {%- comment -%} ============ FAQ ============ {%- endcomment -%}
-  {%- assign faqs = section.blocks | where: "type", "faq_item" -%}
-  {%- if faqs.size > 0 -%}
-    <div class="agc-sec alt">
-      <div class="agc-wrap">
-        <div class="agc-sec-head">
-          <p class="eyebrow">{{ s.faq_eyebrow }}</p>
-          <h2 class="agc-sec-title">{{ s.faq_title }}</h2>
-        </div>
-        <div class="agc-faq">
-          {%- for b in faqs -%}
-            <div class="agc-faq-item">
-              <button type="button" class="agc-faq-q" onclick="agcFaq_{{ uid }}(this)">
-                {{ b.settings.question }}<span class="pm">+</span>
-              </button>
-              <div class="agc-faq-a"><div class="agc-faq-a-inner">{{ b.settings.answer }}</div></div>
+{%- comment -%} 10. TESTIMONIALS {%- endcomment -%}
+<section class="agc-testimonials agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.tc_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.tc_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.tc_title | default: 'Lo Que Dicen Nuestros Clientes' }}</h2>
+    {%- assign tc_blocks = section.blocks | where: 'type', 'testimonial' -%}
+    {%- if tc_blocks.size > 0 -%}
+      <div class="agc-tc-grid">
+        {%- for block in tc_blocks -%}
+          <div class="agc-tc-card agc-fade" style="transition-delay:{{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+            <div class="agc-tc-avatar">{{ block.settings.avatar_emoji | default: '😊' }}</div>
+            <div class="agc-tc-name">{{ block.settings.name }}</div>
+            <div class="agc-tc-role">{{ block.settings.role }}</div>
+            <div class="agc-tc-stars">★★★★★</div>
+            <p class="agc-tc-quote">"{{ block.settings.quote }}"</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{%- comment -%} 11. FAQ {%- endcomment -%}
+<section class="agc-faq agc-fade">
+  <div class="agc-container">
+    {%- if section.settings.faq_eyebrow != blank -%}
+      <div class="agc-section-eyebrow">{{ section.settings.faq_eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="agc-section-title">{{ section.settings.faq_title | default: 'Preguntas Frecuentes' }}</h2>
+    {%- assign faq_blocks = section.blocks | where: 'type', 'faq_item' -%}
+    {%- if faq_blocks.size > 0 -%}
+      <div class="agc-faq-inner">
+        {%- for block in faq_blocks -%}
+          <div class="agc-faq-item" {{ block.shopify_attributes }}>
+            <div class="agc-faq-q" onclick="agcFaq_{{ uid }}(this)">
+              <span>{{ block.settings.question }}</span>
+              <span class="agc-faq-icon">+</span>
             </div>
-          {%- endfor -%}
-        </div>
+            <div class="agc-faq-a">{{ block.settings.answer }}</div>
+          </div>
+        {%- endfor -%}
       </div>
-    </div>
-  {%- endif -%}
-  {%- comment -%} ============ STICKY ADD TO CART ============ {%- endcomment -%}
-  {%- if s.show_sticky and product and product.available -%}
-    <div id="agc-{{ uid }}-sticky">
-      <div class="in">
-        <span class="nm">{{ product.title }}</span>
-        <span class="pr">{{ product.selected_or_first_available_variant.price | money }}</span>
-        <button type="button" onclick="agcStickyAdd_{{ uid }}()">{{ s.cta_text }}</button>
-      </div>
-    </div>
-  {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
 
+</div>{%- comment -%} end #agc-{{ uid }} {%- endcomment -%}
+
+{%- comment -%} 12. STICKY ATC BAR {%- endcomment -%}
+{%- if section.settings.show_sticky -%}
+<div id="agc-sticky-{{ uid }}">
+  <div class="agc-sticky-inner">
+    <div class="agc-sticky-thumb">
+      {%- if product.featured_image -%}
+        <img src="{{ product.featured_image | image_url: width: 104 }}" alt="{{ product.title | escape }}" width="52" height="52">
+      {%- endif -%}
+    </div>
+    <div class="agc-sticky-name">{{ product.title }}</div>
+    <div class="agc-sticky-price" id="agc-sticky-price-{{ uid }}">{{ product.selected_or_first_available_variant.price | money_without_trailing_zeros }}</div>
+    <button class="agc-sticky-btn" onclick="agcStickyAtc_{{ uid }}()">
+      {{ section.settings.cta_text | default: 'Agregar al Carrito' }}
+    </button>
+  </div>
 </div>
-
+{%- endif -%}
 <script>
-(function(){
-  var uid = "{{ uid }}";
-  // gallery
-  window["agcThumb_"+uid] = function(el){
-    var root = el.closest("#agc-"+uid);
-    root.querySelectorAll(".agc-thumb").forEach(function(t){t.classList.remove("is-active");});
-    el.classList.add("is-active");
-    root.querySelector("#agc-main-"+uid).src = el.getAttribute("data-full");
+(function() {
+  var uid = '{{ section.id }}';
+
+  /* ── Gallery image switcher ── */
+  window['agcSetImg_' + uid] = function(src, thumbEl) {
+    var img = document.getElementById('agc-hero-img-' + uid);
+    if (img) img.src = src;
+    var thumbs = document.querySelectorAll('#agc-thumbs-' + uid + ' .agc-thumb');
+    thumbs.forEach(function(t) { t.classList.remove('active'); });
+    if (thumbEl) thumbEl.classList.add('active');
   };
-  // pack selector (real variants) -> toggle active card on change
-  (function(){
-    var root = document.querySelector("#agc-"+uid);
-    if(!root) return;
-    root.querySelectorAll(".agc-tier input[type=radio]").forEach(function(r){
-      r.addEventListener("change", function(){
-        root.querySelectorAll(".agc-tier").forEach(function(t){t.classList.remove("is-active");});
-        if(r.checked){ var card = r.closest(".agc-tier"); if(card) card.classList.add("is-active"); }
-      });
-    });
-  })();
-  // qty stepper
-  window["agcQty_"+uid] = function(d){
-    var inp = document.querySelector("#agc-qty-"+uid);
-    var v = Math.max(1,(parseInt(inp.value,10)||1)+d);
-    inp.value = v;
+
+  /* ── Quantity stepper ── */
+  var qty = 1;
+  window['agcQty_' + uid] = function(delta) {
+    qty = Math.max(1, qty + delta);
+    var disp = document.getElementById('agc-qty-disp-' + uid);
+    var hidden = document.getElementById('agc-qty-hidden-' + uid);
+    if (disp) disp.textContent = qty;
+    if (hidden) hidden.value = qty;
   };
-  // tabs
-  window["agcTab_"+uid] = function(i){
-    var root = document.querySelector("#agc-"+uid);
-    root.querySelectorAll(".agc-tab").forEach(function(t,idx){t.classList.toggle("is-active",idx===i);});
-    root.querySelectorAll(".agc-layer").forEach(function(l){l.classList.toggle("is-active",parseInt(l.getAttribute("data-layer"),10)===i);});
+
+  /* ── Tier selector ── */
+  window['agcSelectTier_' + uid] = function(el, variantId) {
+    var cards = document.querySelectorAll('#agc-tiers-' + uid + ' .agc-tier-card');
+    cards.forEach(function(c) { c.classList.remove('selected'); });
+    el.classList.add('selected');
+    var varInput = document.getElementById('agc-variant-' + uid);
+    if (varInput && variantId && variantId !== 'undefined') {
+      varInput.value = variantId;
+    }
+    var price = el.getAttribute('data-price');
+    var stickyPrice = document.getElementById('agc-sticky-price-' + uid);
+    if (stickyPrice && price) stickyPrice.textContent = price;
   };
-  // faq
-  window["agcFaq_"+uid] = function(btn){
-    var item = btn.parentElement;
-    var a = item.querySelector(".agc-faq-a");
-    var open = item.classList.toggle("is-open");
-    a.style.maxHeight = open ? a.scrollHeight + "px" : "0";
-  };
-  // AJAX add to cart (progressive enhancement; falls back to normal POST)
-  var form = document.querySelector("#agc-form-"+uid);
-  if(form){
-    form.addEventListener("submit", function(e){
-      if(!window.fetch) return; // let normal form POST happen
+
+  /* ── ATC form: AJAX with fallback ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('agc-form-' + uid);
+    if (!form) return;
+    form.addEventListener('submit', function(e) {
       e.preventDefault();
-      var btn = document.querySelector("#agc-cta-"+uid);
-      var original = btn ? btn.textContent : "";
-      if(btn){ btn.disabled = true; btn.textContent = "Agregando..."; }
-      fetch("{{ routes.cart_add_url }}", {
-        method:"POST",
-        headers:{ "Accept":"application/json" },
-        body:new FormData(form)
-      }).then(function(r){ return r.json(); })
-        .then(function(){ window.location.href = "{{ routes.cart_url }}"; })
-        .catch(function(){ form.submit(); })
-        .finally(function(){ if(btn){ btn.disabled=false; btn.textContent=original; } });
-    });
-  }
-  // sticky add-to-cart: trigger main form; show after hero scrolls out
-  window["agcStickyAdd_"+uid] = function(){
-    var cta = document.querySelector("#agc-cta-"+uid);
-    if(cta){ cta.click(); }
-  };
-  (function(){
-    var bar = document.querySelector("#agc-"+uid+"-sticky");
-    var hero = document.querySelector("#agc-form-"+uid);
-    if(!bar || !hero || !("IntersectionObserver" in window)) return;
-    new IntersectionObserver(function(ents){
-      ents.forEach(function(en){ bar.classList.toggle("show", !en.isIntersecting); });
-    }, { rootMargin:"0px 0px -80% 0px" }).observe(hero);
-  })();
-  // animated count-up for stat numbers
-  (function(){
-    var root = document.querySelector("#agc-"+uid);
-    if(!root || !("IntersectionObserver" in window)) return;
-    var nodes = root.querySelectorAll(".agc-stat-num, .agc-pstat-num");
-    var io = new IntersectionObserver(function(ents){
-      ents.forEach(function(en){
-        if(!en.isIntersecting) return;
-        var el = en.target; io.unobserve(el);
-        var raw = el.textContent.trim();
-        var m = raw.match(/^(\D*)(\d+)(.*)$/);
-        if(!m){ return; }
-        var pre=m[1], target=parseInt(m[2],10), suf=m[3], start=null, dur=1100;
-        function step(ts){ if(!start) start=ts; var p=Math.min((ts-start)/dur,1);
-          el.textContent = pre + Math.floor(p*target) + suf; if(p<1) requestAnimationFrame(step); }
-        requestAnimationFrame(step);
+      var btn = document.getElementById('agc-atc-' + uid);
+      var variantId = document.getElementById('agc-variant-' + uid).value;
+      var quantity = document.getElementById('agc-qty-hidden-' + uid).value;
+      if (!variantId) { form.submit(); return; }
+      if (btn) { btn.disabled = true; btn.textContent = 'Agregando...'; }
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+        body: JSON.stringify({ id: variantId, quantity: parseInt(quantity) || 1 })
+      })
+      .then(function(r) {
+        if (!r.ok) throw new Error('Network error');
+        return r.json();
+      })
+      .then(function() {
+        if (btn) { btn.disabled = false; btn.textContent = '✓ Agregado al carrito'; }
+        setTimeout(function() {
+          if (btn) btn.textContent = '{{ section.settings.cta_text | default: "Agregar al Carrito" }}';
+        }, 2500);
+        document.dispatchEvent(new CustomEvent('cart:updated'));
+        // Try to open cart drawer if theme supports it
+        if (window.Shopify && window.Shopify.onCartUpdate) window.Shopify.onCartUpdate();
+      })
+      .catch(function() {
+        if (btn) btn.disabled = false;
+        form.submit();
       });
-    }, { threshold:0.4 });
-    nodes.forEach(function(n){ io.observe(n); });
-  
-  // ugc show more
-  window["agcUgcMore_"+uid] = function(btn){
-    var root = document.querySelector("#agc-"+uid);
-    root.querySelectorAll(".agc-ugc-hidden").forEach(function(c){ c.classList.remove("agc-ugc-hidden"); });
-    btn.style.display = "none";
+    });
+  });
+
+  /* ── Sticky ATC ── */
+  window['agcStickyAtc_' + uid] = function() {
+    var btn = document.getElementById('agc-atc-' + uid);
+    if (btn) btn.click();
   };
-})();
+
+  /* ── UGC show more ── */
+  window['agcShowMore_' + uid] = function() {
+    var hidden = document.querySelectorAll('#agc-' + uid + ' .agc-ugc-hidden');
+    hidden.forEach(function(el) { el.classList.remove('agc-ugc-hidden'); });
+    var moreBtn = document.getElementById('agc-ugc-more-' + uid);
+    if (moreBtn) moreBtn.style.display = 'none';
+  };
+
+  /* ── FAQ accordion ── */
+  window['agcFaq_' + uid] = function(qEl) {
+    var item = qEl.parentElement;
+    var isOpen = item.classList.contains('open');
+    // Close all
+    document.querySelectorAll('#agc-' + uid + ' .agc-faq-item.open').forEach(function(i) {
+      i.classList.remove('open');
+      i.querySelector('.agc-faq-icon').textContent = '+';
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      item.querySelector('.agc-faq-icon').textContent = '×';
+    }
+  };
+
+  /* ── IntersectionObserver: fade-in ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    var fadeEls = document.querySelectorAll('#agc-' + uid + ' .agc-fade');
+    if ('IntersectionObserver' in window) {
+      var fadeObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            fadeObs.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      fadeEls.forEach(function(el) { fadeObs.observe(el); });
+    } else {
+      fadeEls.forEach(function(el) { el.classList.add('is-visible'); });
+    }
+
+    /* ── Ring arc animation ── */
+    var rings = document.querySelectorAll('#agc-' + uid + ' .agc-ring-arc');
+    if ('IntersectionObserver' in window) {
+      var ringObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          var arc = entry.target;
+          var pct = parseFloat(arc.getAttribute('data-pct')) || 0;
+          var circumference = 314.16;
+          var target = circumference * (1 - pct / 100);
+          var start = circumference;
+          var startTime = null;
+          var duration = 1200;
+          function animateRing(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var ease = 1 - Math.pow(1 - progress, 3);
+            arc.style.strokeDashoffset = (start - (start - target) * ease).toString();
+            if (progress < 1) requestAnimationFrame(animateRing);
+          }
+          requestAnimationFrame(animateRing);
+          ringObs.unobserve(arc);
+        });
+      }, { threshold: 0.3 });
+      rings.forEach(function(r) { ringObs.observe(r); });
+    }
+
+    /* ── Sticky bar visibility ── */
+    var atcBtn = document.getElementById('agc-atc-' + uid);
+    var stickyBar = document.getElementById('agc-sticky-' + uid);
+    if (atcBtn && stickyBar && 'IntersectionObserver' in window) {
+      var stickyObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            stickyBar.classList.remove('visible');
+          } else {
+            stickyBar.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.1 });
+      stickyObs.observe(atcBtn);
+    }
+
+    /* ── Count-up animation ── */
+    var countEls = document.querySelectorAll('#agc-' + uid + ' .agc-countup');
+    if ('IntersectionObserver' in window) {
+      var countObs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (!entry.isIntersecting) return;
+          var el = entry.target;
+          var rawTarget = el.getAttribute('data-target');
+          var numTarget = parseFloat(rawTarget);
+          if (isNaN(numTarget)) return;
+          var originalText = el.textContent;
+          var prefix = originalText.replace(/[\d.]+.*$/, '');
+          var suffix = originalText.replace(/^[^0-9]*[\d.]+/, '');
+          var startVal = 0;
+          var startTime = null;
+          var duration = 1500;
+          function animateCount(ts) {
+            if (!startTime) startTime = ts;
+            var progress = Math.min((ts - startTime) / duration, 1);
+            var ease = 1 - Math.pow(1 - progress, 3);
+            var current = startVal + (numTarget - startVal) * ease;
+            el.textContent = prefix + (Number.isInteger(numTarget) ? Math.round(current) : current.toFixed(1)) + suffix;
+            if (progress < 1) requestAnimationFrame(animateCount);
+          }
+          requestAnimationFrame(animateCount);
+          countObs.unobserve(el);
+        });
+      }, { threshold: 0.5 });
+      countEls.forEach(function(el) { countObs.observe(el); });
+    }
+  });
+
 })();
 </script>
-
 {% schema %}
 {
-  "name": "Aguacero Showerhead",
+  "name": "Aguacero Product Page",
   "tag": "section",
-  "class": "aguacero-showerhead-section",
+  "class": "agc-section",
   "settings": [
-    { "type": "header", "content": "Colores" },
-    { "type": "color", "id": "color_accent", "label": "Acento", "default": "#9bb5a2" },
-    { "type": "color", "id": "color_pale", "label": "Pálido", "default": "#eff4f1" },
-    { "type": "color", "id": "color_pale_border", "label": "Borde pálido", "default": "#c6d9ce" },
-    { "type": "color", "id": "color_dark", "label": "Oscuro", "default": "#1c1c1c" },
-    { "type": "color", "id": "color_text", "label": "Texto", "default": "#1c1c1c" },
-    { "type": "color", "id": "color_muted", "label": "Texto tenue", "default": "#6b7c73" },
-    { "type": "color", "id": "color_border", "label": "Borde", "default": "#d8e6df" },
-    { "type": "color", "id": "color_bg", "label": "Fondo", "default": "#ffffff" },
-    { "type": "color", "id": "color_offwhite", "label": "Fondo alterno", "default": "#f8faf9" },
-    { "type": "color", "id": "color_ok", "label": "Verde OK", "default": "#4a8060" },
-
-    { "type": "header", "content": "Barra de anuncios" },
-    { "type": "checkbox", "id": "show_ann", "label": "Mostrar barra de anuncios", "default": true },
-
-    { "type": "header", "content": "Producto (héroe)" },
-    { "type": "text", "id": "gallery_badge", "label": "Etiqueta sobre la imagen", "default": "Más vendido" },
-    { "type": "text", "id": "product_tag", "label": "Pill superior", "default": "✦ Tu piel te lo agradecerá" },
-    { "type": "text", "id": "title", "label": "Título (usa | para cursiva/acento)", "default": "El secreto de tu piel está en el | agua" },
-    { "type": "checkbox", "id": "show_rating", "label": "Mostrar calificación", "default": true },
-    { "type": "text", "id": "rating_stars", "label": "Estrellas", "default": "★★★★★" },
-    { "type": "text", "id": "rating_value", "label": "Valor", "default": "4.9" },
-    { "type": "text", "id": "rating_count", "label": "Conteo", "default": "127 reseñas" },
-    { "type": "textarea", "id": "tagline", "label": "Descripción", "default": "El secreto para una piel impecable no está en tu skincare — está en el agua. Aguacero filtra el cloro, los metales pesados y las toxinas en cada ducha." },
-    { "type": "text", "id": "variant_label", "label": "Etiqueta de variantes", "default": "Selecciona el color" },
-    { "type": "text", "id": "tier_label", "label": "Etiqueta de packs", "default": "Selecciona tu pack" },
-    { "type": "text", "id": "cta_text", "label": "Texto del botón", "default": "Agregar al carrito" },
-    { "type": "text", "id": "sold_out_text", "label": "Texto agotado", "default": "Agotado" },
-    { "type": "richtext", "id": "delivery_text", "label": "Texto de envío", "default": "<p><strong>Despacho inmediato</strong> — Recibe en 2–5 días hábiles · Pago contra entrega</p>" },
-    { "type": "text", "id": "timeline_label", "label": "Etiqueta línea de tiempo", "default": "Lo que sentirás" },
-    { "type": "text", "id": "pay_label", "label": "Etiqueta de pagos", "default": "Aceptamos:" },
-
-    { "type": "header", "content": "Urgencia / stock" },
-    { "type": "checkbox", "id": "show_urgency", "label": "Mostrar barra de urgencia", "default": true },
-    { "type": "text", "id": "urgency_title", "label": "Título", "default": "Reservado del lote actual" },
-    { "type": "range", "id": "urgency_percent", "label": "Porcentaje", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 84 },
-    { "type": "text", "id": "urgency_note", "label": "Nota", "default": "37 personas reservaron en las últimas 24 horas" },
-
-    { "type": "header", "content": "Sección: Características" },
-    { "type": "text", "id": "feat_eyebrow", "label": "Eyebrow", "default": "Por qué Aguacero" },
-    { "type": "text", "id": "feat_title", "label": "Título", "default": "Diseñado con intención" },
-
-    { "type": "header", "content": "Sección: Beneficios" },
-    { "type": "text", "id": "ben_eyebrow", "label": "Eyebrow", "default": "Lo que vivirás" },
-    { "type": "text", "id": "ben_title", "label": "Título", "default": "Tu ducha, reinventada" },
-
-    { "type": "header", "content": "Sección: Estadísticas" },
-    { "type": "text", "id": "stat_title", "label": "Título", "default": "Números que hablan" },
-
-    { "type": "header", "content": "Sección: Comparativa" },
-    { "type": "text", "id": "cmp_eyebrow", "label": "Eyebrow", "default": "Comparativa" },
-    { "type": "text", "id": "cmp_title", "label": "Título", "default": "Aguacero vs duchas convencionales" },
-    { "type": "text", "id": "cmp_feature_head", "label": "Encabezado columna 1", "default": "Característica" },
-    { "type": "text", "id": "cmp_col1", "label": "Encabezado Aguacero", "default": "Aguacero" },
-    { "type": "text", "id": "cmp_col2", "label": "Encabezado convencional", "default": "Convencional" },
-
-    { "type": "header", "content": "Sección: Filtración (capas)" },
-    { "type": "text", "id": "ft_eyebrow", "label": "Eyebrow", "default": "La tecnología por dentro" },
-    { "type": "text", "id": "ft_title", "label": "Título", "default": "6 capas de filtración pura" },
-    { "type": "textarea", "id": "ft_subtitle", "label": "Subtítulo", "default": "Cada capa cumple una función específica para darte el agua más limpia posible." },
-
-    { "type": "header", "content": "Sección: Testimonios" },
-    { "type": "text", "id": "tc_eyebrow", "label": "Eyebrow", "default": "Historias reales" },
-    { "type": "text", "id": "tc_title", "label": "Título", "default": "+127 personas ya lo sienten" },
-
-    { "type": "header", "content": "Sección: FAQ" },
-    { "type": "text", "id": "faq_eyebrow", "label": "Eyebrow", "default": "Preguntas frecuentes" },
-    { "type": "text", "id": "faq_title", "label": "Título", "default": "Todo lo que necesitas saber" },
-
-    { "type": "header", "content": "Sección: El problema (agua)" },
-    { "type": "checkbox", "id": "show_problem", "label": "Mostrar sección", "default": true },
-    { "type": "text", "id": "prob_eyebrow", "label": "Eyebrow", "default": "El problema" },
-    { "type": "text", "id": "prob_title", "label": "Título", "default": "Tu agua no es tan segura" },
-    { "type": "image_picker", "id": "prob_image", "label": "Imagen" },
-    { "type": "textarea", "id": "prob_intro", "label": "Intro", "default": "El agua del grifo puede arrastrar cloro, metales pesados y sedimentos por tuberías viejas — justo lo que reseca tu piel y debilita tu cabello." },
-
-    { "type": "header", "content": "Sección: Lo que causa" },
-    { "type": "text", "id": "causes_eyebrow", "label": "Eyebrow", "default": "Lo que provoca" },
-    { "type": "text", "id": "causes_title", "label": "Título", "default": "Lo que causa el agua sin filtrar" },
-
-    { "type": "header", "content": "Sección: Aval / experto" },
-    { "type": "checkbox", "id": "show_aval", "label": "Mostrar sección", "default": true },
-    { "type": "text", "id": "av_eyebrow", "label": "Eyebrow", "default": "Respaldo profesional" },
-    { "type": "text", "id": "av_title", "label": "Título", "default": "Recomendado por especialistas en piel" },
-    { "type": "image_picker", "id": "av_image", "label": "Foto" },
-    { "type": "textarea", "id": "av_quote", "label": "Cita", "default": "Gran parte de la resequedad e irritación que veo en consulta empieza en el agua de la ducha, no en los productos." },
-    { "type": "text", "id": "av_name", "label": "Nombre", "default": "Dra. [Nombre Apellido]" },
-    { "type": "text", "id": "av_role", "label": "Rol", "default": "Dermatóloga · Colombia" },
-
-    { "type": "header", "content": "Sección: Antes y después" },
-    { "type": "text", "id": "ba_eyebrow", "label": "Eyebrow", "default": "Resultados reales" },
-    { "type": "text", "id": "ba_title", "label": "Título", "default": "El cambio se nota" },
-    { "type": "text", "id": "ba_before_label", "label": "Etiqueta antes", "default": "Antes" },
-    { "type": "text", "id": "ba_after_label", "label": "Etiqueta después", "default": "Después" },
-    { "type": "text", "id": "ba_note", "label": "Nota", "default": "Resultados tras 30 días filtrando el agua de la ducha. Los resultados pueden variar." },
-
-    { "type": "header", "content": "Sección: Videos" },
-    { "type": "text", "id": "vid_eyebrow", "label": "Eyebrow", "default": "Experiencias reales" },
-    { "type": "text", "id": "vid_title", "label": "Título", "default": "Lo que dicen en video" },
-
-    { "type": "header", "content": "Sección: Especificaciones" },
-    { "type": "checkbox", "id": "show_specs", "label": "Mostrar sección", "default": true },
-    { "type": "text", "id": "specs_eyebrow", "label": "Eyebrow", "default": "Especificaciones" },
-    { "type": "text", "id": "specs_title", "label": "Título", "default": "Diseñado al detalle" },
-    { "type": "text", "id": "specs_overview_title", "label": "Título Resumen", "default": "Resumen" },
-    { "type": "text", "id": "specs_included_title", "label": "Título Incluye", "default": "Qué incluye" },
-
-        { "type": "header", "content": "Sección: Fotos UGC" },
-    { "type": "text", "id": "ugc_eyebrow", "label": "Eyebrow", "default": "Vidas reales cambiadas" },
-    { "type": "text", "id": "ugc_title", "label": "Título", "default": "El cambio es real" },
-    { "type": "text", "id": "ugc_more_label", "label": "Texto 'ver más'", "default": "Ver más resultados" },
-
-    { "type": "header", "content": "Caja de compra · extras" },
-    { "type": "checkbox", "id": "show_pack_img", "label": "Mostrar foto en los packs", "default": true },
-    { "type": "checkbox", "id": "show_sticky", "label": "Barra fija 'Agregar al carrito'", "default": true }
+    {
+      "type": "header",
+      "content": "Colores"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Fondo principal",
+      "default": "#f5f1e8"
+    },
+    {
+      "type": "color",
+      "id": "color_white",
+      "label": "Blanco",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_dark",
+      "label": "Oscuro (navy)",
+      "default": "#1a1036"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Acento (azul)",
+      "default": "#2952cc"
+    },
+    {
+      "type": "color",
+      "id": "color_pale",
+      "label": "Fondo alterno",
+      "default": "#ece7dc"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Texto",
+      "default": "#1a1036"
+    },
+    {
+      "type": "color",
+      "id": "color_muted",
+      "label": "Texto atenuado",
+      "default": "#6b6580"
+    },
+    {
+      "type": "color",
+      "id": "color_border",
+      "label": "Borde",
+      "default": "#e3ddd3"
+    },
+    {
+      "type": "color",
+      "id": "color_ok",
+      "label": "Verde éxito",
+      "default": "#2a7a4a"
+    },
+    {
+      "type": "header",
+      "content": "Hero – Galería y Buy Box"
+    },
+    {
+      "type": "text",
+      "id": "gallery_badge",
+      "label": "Badge en imagen (ej. #1 MÁS VENDIDO)",
+      "default": "#1 MÁS VENDIDO"
+    },
+    {
+      "type": "text",
+      "id": "product_tag",
+      "label": "Pill tag sobre título",
+      "default": "Filtro de Ducha Premium"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Título del producto (usa | para itálica en acento)",
+      "default": "La Ducha |AQUO| – Agua Pura, Piel Radiante"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Mostrar calificación de estrellas",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rating_stars",
+      "label": "Número de estrellas",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "text",
+      "id": "rating_value",
+      "label": "Valor de calificación",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "rating_count",
+      "label": "Número de reseñas",
+      "default": "2,847"
+    },
+    {
+      "type": "textarea",
+      "id": "tagline",
+      "label": "Tagline / subtítulo",
+      "default": "Elimina el cloro, metales pesados y bacterias. Cabello más suave, piel más clara — garantizado."
+    },
+    {
+      "type": "text",
+      "id": "tier_label",
+      "label": "Etiqueta selector de packs",
+      "default": "Elige tu pack"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Texto del botón ATC",
+      "default": "Agregar al Carrito"
+    },
+    {
+      "type": "text",
+      "id": "sold_out_text",
+      "label": "Texto agotado",
+      "default": "Agotado"
+    },
+    {
+      "type": "text",
+      "id": "delivery_text",
+      "label": "Texto de entrega",
+      "default": "🚚 Envío gratis · Entrega en 3-5 días hábiles"
+    },
+    {
+      "type": "text",
+      "id": "timeline_label",
+      "label": "Etiqueta de cronograma de resultados",
+      "default": "Tu cronograma de resultados"
+    },
+    {
+      "type": "text",
+      "id": "pay_label",
+      "label": "Etiqueta de métodos de pago",
+      "default": "Pago 100% seguro con"
+    },
+    {
+      "type": "header",
+      "content": "Urgencia"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_urgency",
+      "label": "Mostrar barra de urgencia",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "urgency_title",
+      "label": "Título urgencia",
+      "default": "¡Quedan pocos en stock!"
+    },
+    {
+      "type": "range",
+      "id": "urgency_percent",
+      "label": "Porcentaje vendido",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 72
+    },
+    {
+      "type": "text",
+      "id": "urgency_note",
+      "label": "Nota urgencia",
+      "default": "Alta demanda en tu área — pide hoy para asegurar tu envío"
+    },
+    {
+      "type": "header",
+      "content": "UGC – Fotos de clientes"
+    },
+    {
+      "type": "text",
+      "id": "ugc_eyebrow",
+      "label": "Eyebrow UGC",
+      "default": "Comunidad Real"
+    },
+    {
+      "type": "text",
+      "id": "ugc_title",
+      "label": "Título sección UGC",
+      "default": "Vidas Reales Transformadas"
+    },
+    {
+      "type": "text",
+      "id": "ugc_more_label",
+      "label": "Texto botón ver más",
+      "default": "Ver más historias"
+    },
+    {
+      "type": "header",
+      "content": "Beneficios"
+    },
+    {
+      "type": "text",
+      "id": "ben_eyebrow",
+      "label": "Eyebrow beneficios",
+      "default": "Lo que obtienes"
+    },
+    {
+      "type": "text",
+      "id": "ben_title",
+      "label": "Título beneficios",
+      "default": "Lo Que Experimentarás"
+    },
+    {
+      "type": "header",
+      "content": "Sección Problema"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_problem",
+      "label": "Mostrar sección problema",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "prob_eyebrow",
+      "label": "Eyebrow problema",
+      "default": "La verdad incómoda"
+    },
+    {
+      "type": "text",
+      "id": "prob_title",
+      "label": "Título problema",
+      "default": "Tu Agua No Es Segura"
+    },
+    {
+      "type": "textarea",
+      "id": "prob_intro",
+      "label": "Párrafo introductorio",
+      "default": "El agua municipal contiene decenas de químicos y contaminantes que dañan tu piel, cabello y salud a diario. Cada ducha sin filtrar expone tu cuerpo a cloro, metales pesados y bacterias."
+    },
+    {
+      "type": "image_picker",
+      "id": "prob_image",
+      "label": "Imagen sección problema"
+    },
+    {
+      "type": "header",
+      "content": "Filtración / Stats circulares"
+    },
+    {
+      "type": "text",
+      "id": "filt_eyebrow",
+      "label": "Eyebrow filtración",
+      "default": "Tecnología AQUO"
+    },
+    {
+      "type": "text",
+      "id": "filt_title",
+      "label": "Título filtración",
+      "default": "Filtración de Primera Clase"
+    },
+    {
+      "type": "header",
+      "content": "Endorsement / Aval"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_aval",
+      "label": "Mostrar sección endorsement",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "av_eyebrow",
+      "label": "Eyebrow endorsement",
+      "default": "Avalado por expertos"
+    },
+    {
+      "type": "text",
+      "id": "av_title",
+      "label": "Título endorsement",
+      "default": "Respaldado por Expertos en Salud"
+    },
+    {
+      "type": "textarea",
+      "id": "av_quote",
+      "label": "Cita del experto",
+      "default": "El filtro AQUO es el método más efectivo y accesible que he visto para reducir la exposición diaria a contaminantes en el hogar. Lo recomiendo a todos mis pacientes."
+    },
+    {
+      "type": "text",
+      "id": "av_name",
+      "label": "Nombre del experto",
+      "default": "Dr. Carlos Méndez"
+    },
+    {
+      "type": "text",
+      "id": "av_role",
+      "label": "Cargo/rol del experto",
+      "default": "Especialista en Medicina Preventiva"
+    },
+    {
+      "type": "image_picker",
+      "id": "av_image",
+      "label": "Foto del experto"
+    },
+    {
+      "type": "text",
+      "id": "av_cta_text",
+      "label": "Texto CTA endorsement",
+      "default": "Ver el estudio completo"
+    },
+    {
+      "type": "url",
+      "id": "av_cta_url",
+      "label": "URL CTA endorsement"
+    },
+    {
+      "type": "header",
+      "content": "Antes / Después"
+    },
+    {
+      "type": "text",
+      "id": "ba_eyebrow",
+      "label": "Eyebrow antes/después",
+      "default": "Resultados comprobados"
+    },
+    {
+      "type": "text",
+      "id": "ba_title",
+      "label": "Título antes/después",
+      "default": "Resultados que Cambian la Vida"
+    },
+    {
+      "type": "text",
+      "id": "ba_before_label",
+      "label": "Etiqueta imagen antes",
+      "default": "Antes"
+    },
+    {
+      "type": "text",
+      "id": "ba_after_label",
+      "label": "Etiqueta imagen después",
+      "default": "Después"
+    },
+    {
+      "type": "textarea",
+      "id": "ba_note",
+      "label": "Nota disclaimer",
+      "default": "*Resultados individuales pueden variar. Fotos de clientes reales con permiso."
+    },
+    {
+      "type": "header",
+      "content": "Testimonios"
+    },
+    {
+      "type": "text",
+      "id": "tc_eyebrow",
+      "label": "Eyebrow testimonios",
+      "default": "Lo que dicen"
+    },
+    {
+      "type": "text",
+      "id": "tc_title",
+      "label": "Título testimonios",
+      "default": "Lo Que Dicen Nuestros Clientes"
+    },
+    {
+      "type": "header",
+      "content": "FAQ"
+    },
+    {
+      "type": "text",
+      "id": "faq_eyebrow",
+      "label": "Eyebrow FAQ",
+      "default": "Tienes preguntas"
+    },
+    {
+      "type": "text",
+      "id": "faq_title",
+      "label": "Título FAQ",
+      "default": "Preguntas Frecuentes"
+    },
+    {
+      "type": "header",
+      "content": "Barra flotante"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sticky",
+      "label": "Mostrar barra ATC fija",
+      "default": true
+    }
   ],
   "blocks": [
-    { "type": "announcement_item", "name": "Anuncio", "settings": [
-      { "type": "text", "id": "text", "label": "Texto", "default": "✦ Envío gratis en Colombia" } ] },
-    { "type": "pricing_tier", "name": "Etiqueta de pack", "settings": [
-      { "type": "paragraph", "content": "Cada bloque decora una variante en orden (1º bloque = 1ª variante). El precio se toma de la variante real en Shopify." },
-      { "type": "text", "id": "name", "label": "Nombre mostrado (vacío = título de variante)" },
-      { "type": "text", "id": "unit_note", "label": "Nota bajo precio", "default": "c/u" },
-      { "type": "text", "id": "sub", "label": "Subtítulo", "default": "Incluye filtro de 6 meses" },
-      { "type": "text", "id": "badge", "label": "Badge (opcional)" },
-      { "type": "text", "id": "savings", "label": "Ahorro (opcional)" } ] },
-    { "type": "payment_method", "name": "Método de pago", "settings": [
-      { "type": "image_picker", "id": "logo", "label": "Logo" },
-      { "type": "text", "id": "name", "label": "Nombre", "default": "Visa" } ] },
-    { "type": "trust_badge", "name": "Sello de confianza", "settings": [
-      { "type": "text", "id": "icon", "label": "Ícono (emoji)", "default": "🛡️" },
-      { "type": "text", "id": "label", "label": "Texto", "default": "Garantía 90 días" } ] },
-    { "type": "timeline_item", "name": "Línea de tiempo", "settings": [
-      { "type": "text", "id": "week", "label": "Periodo", "default": "Semana 1:" },
-      { "type": "text", "id": "description", "label": "Descripción", "default": "El agua se siente más suave" } ] },
-    { "type": "marquee_item", "name": "Marquesina", "settings": [
-      { "type": "text", "id": "text", "label": "Texto", "default": "✦ Filtra cloro, metales y toxinas" } ] },
-    { "type": "feature_card", "name": "Tarjeta de característica", "settings": [
-      { "type": "image_picker", "id": "icon_img", "label": "Imagen (opcional)" },
-      { "type": "text", "id": "icon", "label": "Emoji", "default": "🔬" },
-      { "type": "text", "id": "title", "label": "Título", "default": "Filtración múltiple" },
-      { "type": "textarea", "id": "description", "label": "Descripción", "default": "6 capas que eliminan cloro, metales y sedimentos." } ] },
-    { "type": "benefit", "name": "Beneficio", "settings": [
-      { "type": "image_picker", "id": "icon_img", "label": "Imagen (opcional)" },
-      { "type": "text", "id": "emoji", "label": "Emoji", "default": "✨" },
-      { "type": "text", "id": "title", "label": "Título", "default": "Piel que respira" },
-      { "type": "textarea", "id": "description", "label": "Descripción", "default": "Tu piel recupera su hidratación natural." } ] },
-    { "type": "stat", "name": "Estadística", "settings": [
-      { "type": "text", "id": "number", "label": "Número", "default": "89%" },
-      { "type": "textarea", "id": "label", "label": "Texto", "default": "reportó menos resequedad tras 4 semanas" } ] },
-    { "type": "comparison_row", "name": "Fila comparativa", "settings": [
-      { "type": "text", "id": "feature", "label": "Característica", "default": "FILTRACIÓN" },
-      { "type": "text", "id": "sub", "label": "Subtítulo", "default": "de cloro" },
-      { "type": "checkbox", "id": "col1_yes", "label": "Aguacero ✓", "default": true },
-      { "type": "checkbox", "id": "col2_yes", "label": "Convencional ✓", "default": false } ] },
-    { "type": "filter_layer", "name": "Capa de filtro", "settings": [
-      { "type": "text", "id": "tab_name", "label": "Nombre", "default": "Carbón Activado" },
-      { "type": "text", "id": "layer_badge", "label": "Badge", "default": "Capa 1 de 6" },
-      { "type": "text", "id": "color_hint", "label": "Color", "default": "⚫ Color: negro profundo" },
-      { "type": "textarea", "id": "description", "label": "Descripción", "default": "Absorbe el cloro y los compuestos que irritan tu piel." } ] },
-    { "type": "testimonial", "name": "Testimonio", "settings": [
-      { "type": "text", "id": "avatar_emoji", "label": "Emoji avatar", "default": "🧖‍♀️" },
-      { "type": "text", "id": "name", "label": "Nombre", "default": "Valentina M." },
-      { "type": "text", "id": "role", "label": "Rol / ciudad", "default": "Bogotá" },
-      { "type": "textarea", "id": "quote", "label": "Cita", "default": "Mi piel ya no se siente reseca. Un cambio total." } ] },
-    { "type": "faq_item", "name": "Pregunta frecuente", "settings": [
-      { "type": "text", "id": "question", "label": "Pregunta", "default": "¿Cuál es la política de devoluciones?" },
-      { "type": "textarea", "id": "answer", "label": "Respuesta", "default": "Garantía de 90 días con devolución completa." } ] },
-    { "type": "problem_stat", "name": "Dato del problema", "settings": [
-      { "type": "text", "id": "number", "label": "Número", "default": "80%" },
-      { "type": "textarea", "id": "label", "label": "Texto", "default": "del agua del grifo contiene cloro y metales detectables" } ] },
-    { "type": "cause_card", "name": "Causa (con foto)", "settings": [
-      { "type": "image_picker", "id": "image", "label": "Imagen" },
-      { "type": "text", "id": "title", "label": "Título", "default": "Brotes en la piel" },
-      { "type": "textarea", "id": "description", "label": "Descripción", "default": "El cloro y los minerales obstruyen los poros y alteran la barrera de la piel." } ] },
-    { "type": "before_after", "name": "Antes / Después", "settings": [
-      { "type": "image_picker", "id": "before_image", "label": "Imagen antes" },
-      { "type": "image_picker", "id": "after_image", "label": "Imagen después" } ] },
-    { "type": "video_item", "name": "Video", "settings": [
-      { "type": "video", "id": "video", "label": "Video (subido a Shopify)" },
-      { "type": "image_picker", "id": "poster", "label": "Miniatura (si no hay video)" },
-      { "type": "text", "id": "label", "label": "Etiqueta", "default": "Mi piel cambió por completo" } ] },
-    { "type": "overview_point", "name": "Punto de resumen", "settings": [
-      { "type": "text", "id": "title", "label": "Título", "default": "Reduce el cloro del agua" },
-      { "type": "textarea", "id": "description", "label": "Descripción", "default": "Agua sin químicos que mejora piel y cabello." } ] },
-    { "type": "spec_group", "name": "Grupo de specs", "settings": [
-      { "type": "text", "id": "title", "label": "Título", "default": "Ducha filtrante" },
-      { "type": "textarea", "id": "lines", "label": "Líneas (una por renglón)", "default": "Diámetro de cara amplio para mayor cobertura\nInstalación universal en cualquier ducha\nMaterial resistente y duradero" } ] },
-        { "type": "ugc_photo", "name": "Foto UGC / reseña", "settings": [
-      { "type": "image_picker", "id": "photo", "label": "Foto del cliente" },
-      { "type": "textarea", "id": "quote", "label": "Reseña (texto corto)", "default": "Mi piel cambió completamente en 3 semanas." },
-      { "type": "text", "id": "name", "label": "Nombre", "default": "Valentina M." },
-      { "type": "text", "id": "location", "label": "Ciudad", "default": "Bogotá" } ] },
-    { "type": "included_item", "name": "Incluye (ítem)", "settings": [
-      { "type": "text", "id": "text", "label": "Ítem", "default": "Ducha filtrante Aguacero" } ] }
+    {
+      "type": "announcement_item",
+      "name": "Anuncio",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texto del anuncio",
+          "default": "Envío Gratis en Pedidos +$50"
+        }
+      ]
+    },
+    {
+      "type": "pricing_tier",
+      "name": "Pack / Variante",
+      "settings": [
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del pack",
+          "default": "Pack Starter – 1 filtro"
+        },
+        {
+          "type": "text",
+          "id": "unit_note",
+          "label": "Nota de unidad",
+          "default": "1 cabezal de ducha"
+        },
+        {
+          "type": "text",
+          "id": "sub",
+          "label": "Subtexto",
+          "default": "Ideal para probar"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "Badge (ej. MÁS POPULAR)",
+          "default": ""
+        },
+        {
+          "type": "text",
+          "id": "savings",
+          "label": "Texto ahorro",
+          "default": ""
+        }
+      ]
+    },
+    {
+      "type": "payment_method",
+      "name": "Método de pago",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo método de pago"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "default": "Visa"
+        }
+      ]
+    },
+    {
+      "type": "trust_badge",
+      "name": "Badge de confianza",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Emoji / ícono",
+          "default": "🔒"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Texto del badge",
+          "default": "Compra 100% segura"
+        }
+      ]
+    },
+    {
+      "type": "timeline_item",
+      "name": "Ítem del cronograma",
+      "settings": [
+        {
+          "type": "text",
+          "id": "week",
+          "label": "Semana / período",
+          "default": "Semana 1"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Descripción",
+          "default": "Notas agua más suave y limpia al instante."
+        }
+      ]
+    },
+    {
+      "type": "ugc_photo",
+      "name": "Foto UGC",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "photo",
+          "label": "Foto del cliente"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Cita del cliente",
+          "default": "Mi cabello nunca había sido tan suave."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre del cliente",
+          "default": "María G."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Ciudad / ubicación",
+          "default": "Ciudad de México"
+        }
+      ]
+    },
+    {
+      "type": "benefit",
+      "name": "Beneficio",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon_img",
+          "label": "Imagen del beneficio"
+        },
+        {
+          "type": "text",
+          "id": "emoji",
+          "label": "Emoji (si no hay imagen)",
+          "default": "💧"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Título",
+          "default": "Cabello Más Suave"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Descripción",
+          "default": "Elimina el cloro que reseca y daña tu cabello."
+        },
+        {
+          "type": "text",
+          "id": "stat_number",
+          "label": "Número / estadística",
+          "default": "87%"
+        },
+        {
+          "type": "text",
+          "id": "stat_label",
+          "label": "Etiqueta de la estadística",
+          "default": "reportaron cabello más suave en 2 semanas"
+        }
+      ]
+    },
+    {
+      "type": "marquee_item",
+      "name": "Ítem marquee medios",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Nombre del medio",
+          "default": "Forbes"
+        }
+      ]
+    },
+    {
+      "type": "problem_stat",
+      "name": "Estadística del problema",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Número / valor",
+          "default": "85%"
+        },
+        {
+          "type": "textarea",
+          "id": "label",
+          "label": "Descripción",
+          "default": "del agua municipal contiene niveles detectables de cloro."
+        }
+      ]
+    },
+    {
+      "type": "filtration_stat",
+      "name": "Stat filtración circular",
+      "settings": [
+        {
+          "type": "range",
+          "id": "percent",
+          "label": "Porcentaje",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "default": 90
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiqueta principal",
+          "default": "Cloro eliminado"
+        },
+        {
+          "type": "text",
+          "id": "sublabel",
+          "label": "Sub-etiqueta",
+          "default": "Agua más suave para tu piel"
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonio",
+      "settings": [
+        {
+          "type": "text",
+          "id": "avatar_emoji",
+          "label": "Emoji avatar",
+          "default": "😊"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Nombre",
+          "default": "Ana Rodríguez"
+        },
+        {
+          "type": "text",
+          "id": "role",
+          "label": "Cargo o ciudad",
+          "default": "Guadalajara, MX"
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Cita",
+          "default": "Increíble diferencia desde el primer día. Mi piel está mucho más hidratada."
+        }
+      ]
+    },
+    {
+      "type": "faq_item",
+      "name": "Pregunta frecuente",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Pregunta",
+          "default": "¿Cada cuánto debo cambiar el filtro?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Respuesta",
+          "default": "Recomendamos cambiar el cartucho filtrante cada 3-6 meses dependiendo de la calidad del agua en tu zona y el uso diario."
+        }
+      ]
+    },
+    {
+      "type": "before_after",
+      "name": "Par Antes / Después",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "before_image",
+          "label": "Imagen ANTES"
+        },
+        {
+          "type": "image_picker",
+          "id": "after_image",
+          "label": "Imagen DESPUÉS"
+        }
+      ]
+    }
   ],
   "presets": [
     {
-      "name": "Aguacero Showerhead",
+      "name": "Ducha AQUO",
       "blocks": [
-        { "type": "announcement_item", "settings": { "text": "✦ Envío gratis en Colombia" } },
-        { "type": "announcement_item", "settings": { "text": "✦ Garantía 90 días" } },
-        { "type": "announcement_item", "settings": { "text": "✦ Pago contra entrega" } },
-        { "type": "announcement_item", "settings": { "text": "✦ Instalación en 5 min" } },
-
-        { "type": "pricing_tier", "settings": { "sub": "Incluye filtro de 6 meses", "unit_note": "c/u" } },
-        { "type": "pricing_tier", "settings": { "sub": "El más elegido por nuestros clientes", "unit_note": "c/u", "badge": "⭐ Más popular", "savings": "AHORRA" } },
-        { "type": "pricing_tier", "settings": { "sub": "Máximo ahorro por unidad", "unit_note": "c/u", "badge": "💚 Mejor precio" } },
-
-        { "type": "trust_badge", "settings": { "icon": "🛡️", "label": "Garantía 90 días" } },
-        { "type": "trust_badge", "settings": { "icon": "🔩", "label": "Instalación en 5 min" } },
-        { "type": "trust_badge", "settings": { "icon": "🌿", "label": "Sin químicos" } },
-
-        { "type": "timeline_item", "settings": { "week": "Semana 1:", "description": "El agua se siente más suave, menos clorada" } },
-        { "type": "timeline_item", "settings": { "week": "Semana 2–3:", "description": "Menos resequedad en piel y cuero cabelludo" } },
-        { "type": "timeline_item", "settings": { "week": "Mes 2:", "description": "Piel más luminosa, menos acné, cabello con más brillo" } },
-
-        { "type": "marquee_item", "settings": { "text": "✦ Filtra cloro, metales y toxinas" } },
-        { "type": "marquee_item", "settings": { "text": "✦ Reduce pérdida del cabello" } },
-        { "type": "marquee_item", "settings": { "text": "✦ Disminuye el acné" } },
-        { "type": "marquee_item", "settings": { "text": "✦ Elimina resequedad de la piel" } },
-        { "type": "marquee_item", "settings": { "text": "✦ Instalación sencilla" } },
-        { "type": "marquee_item", "settings": { "text": "✦ Garantía 90 días" } },
-
-        { "type": "feature_card", "settings": { "icon": "🔬", "title": "Filtración múltiple", "description": "6 capas de minerales que eliminan el cloro, metales pesados, toxinas y sedimentos del agua." } },
-        { "type": "feature_card", "settings": { "icon": "🔩", "title": "Instalación en 5 min", "description": "Sin plomero, sin herramientas especiales. Solo enrosca y listo. Compatible con cualquier ducha." } },
-        { "type": "feature_card", "settings": { "icon": "🌿", "title": "100% libre de químicos", "description": "Filtración con minerales naturales, sin cápsulas, sin aditivos. Solo agua pura y limpia." } },
-        { "type": "feature_card", "settings": { "icon": "🛡️", "title": "Garantía de 90 días", "description": "Si no notas diferencia real en tu piel y cabello, te devolvemos el dinero. Sin preguntas." } },
-
-        { "type": "benefit", "settings": { "emoji": "✨", "title": "Piel que respira", "description": "Al eliminar el cloro y los metales, tu piel recupera su hidratación natural desde la primera ducha." } },
-        { "type": "benefit", "settings": { "emoji": "🌊", "title": "6 capas de filtración", "description": "Carbón activado, KDF, vitamina C, turmalina y más — una barrera completa contra todo lo que dañaba tu piel." } },
-        { "type": "benefit", "settings": { "emoji": "⚡", "title": "Lista en 5 minutos", "description": "Sin plomero, sin herramientas. Reemplaza tu ducha actual y empieza a sentir la diferencia hoy." } },
-
-        { "type": "stat", "settings": { "number": "89%", "label": "reportó menos resequedad en piel después de 4 semanas de uso" } },
-        { "type": "stat", "settings": { "number": "93%", "label": "notó menos caída del cabello y mayor brillo en las primeras semanas" } },
-        { "type": "stat", "settings": { "number": "97%", "label": "recomendaría Aguacero a amigos y familia sin dudarlo" } },
-
-        { "type": "comparison_row", "settings": { "feature": "FILTRACIÓN", "sub": "de cloro", "col1_yes": true, "col2_yes": false } },
-        { "type": "comparison_row", "settings": { "feature": "REDUCCIÓN DE CAL", "sub": "y otras sustancias", "col1_yes": true, "col2_yes": false } },
-        { "type": "comparison_row", "settings": { "feature": "INSTALACIÓN", "sub": "sencilla, sin plomero", "col1_yes": true, "col2_yes": false } },
-        { "type": "comparison_row", "settings": { "feature": "GARANTÍA", "sub": "de 90 días", "col1_yes": true, "col2_yes": false } },
-        { "type": "comparison_row", "settings": { "feature": "CALIDAD", "sub": "premium", "col1_yes": true, "col2_yes": false } },
-
-        { "type": "filter_layer", "settings": { "tab_name": "Carbón Activado", "layer_badge": "Capa 1 de 6", "color_hint": "⚫ Color: negro profundo", "description": "La primera línea de defensa. El carbón activado absorbe el cloro, el olor a químicos y los compuestos orgánicos volátiles presentes en el agua del grifo — todo lo que irrita tu piel." } },
-        { "type": "filter_layer", "settings": { "tab_name": "KDF-55", "layer_badge": "Capa 2 de 6", "color_hint": "🔶 Color: cobre-dorado", "description": "Una aleación de cobre y zinc que elimina metales pesados como plomo y mercurio. Además, inhibe el crecimiento de bacterias dentro del filtro." } },
-        { "type": "filter_layer", "settings": { "tab_name": "Vitamina C", "layer_badge": "Capa 3 de 6", "color_hint": "🟠 Color: naranja intenso", "description": "La vitamina C neutraliza al instante el cloro y las cloraminas. Aporta un efecto antioxidante directo sobre tu piel, reduciendo irritación y enrojecimiento." } },
-        { "type": "filter_layer", "settings": { "tab_name": "Turmalina", "layer_badge": "Capa 4 de 6", "color_hint": "✨ Color: negro iridiscente", "description": "Un mineral volcánico que ioniza negativamente el agua, haciéndola más suave y biodisponible — efecto similar al agua de manantial." } },
-        { "type": "filter_layer", "settings": { "tab_name": "Cuarzo", "layer_badge": "Capa 5 de 6", "color_hint": "⚪ Color: blanco translúcido", "description": "Actúa como filtro mecánico que atrapa sedimentos y partículas sólidas. También equilibra el pH del agua en el rango óptimo para la piel." } },
-        { "type": "filter_layer", "settings": { "tab_name": "Perlas Minerales", "layer_badge": "Capa 6 de 6", "color_hint": "🔴 Color: rojizo-terracota", "description": "Infunde el agua con calcio, magnesio y potasio — los minerales que tu piel necesita para mantenerse hidratada, elástica y luminosa." } },
-
-        { "type": "testimonial", "settings": { "avatar_emoji": "🧖‍♀️", "name": "Valentina Morales", "role": "Bogotá · Diseñadora", "quote": "Llevo años batallando con piel reseca. Con 3 semanas de Aguacero, mi dermatóloga me preguntó qué había cambiado. No era el skincare — era el agua." } },
-        { "type": "testimonial", "settings": { "avatar_emoji": "💆‍♂️", "name": "Sebastián Castro", "role": "Medellín · Emprendedor", "quote": "Siempre pensé que era sensible al champú. Resultó que era el cloro del agua. Mi cuero cabelludo mejoró notablemente." } },
-        { "type": "testimonial", "settings": { "avatar_emoji": "🌸", "name": "Mariana Gómez", "role": "Cali · Estudiante de medicina", "quote": "Tenía granos en la espalda hace meses y nada me funcionaba. Dos meses con Aguacero y desaparecieron casi por completo." } },
-        { "type": "testimonial", "settings": { "avatar_emoji": "🏃‍♀️", "name": "Paola Jiménez", "role": "Barranquilla · Deportista", "quote": "Me ducho 2 veces al día. El cloro me tenía la piel destruida. Ahora con Aguacero siento que el agua me hidrata en vez de resecarme." } },
-        { "type": "testimonial", "settings": { "avatar_emoji": "👨‍💼", "name": "Carlos Restrepo", "role": "Bogotá · Abogado", "quote": "Al principio dudé, pero los resultados son innegables. El agua se siente diferente. Mi piel está mucho más equilibrada." } },
-        { "type": "testimonial", "settings": { "avatar_emoji": "👩‍🍳", "name": "Isabella Torres", "role": "Pereira · Chef", "quote": "Pensé que era marketing pero fue lo mejor que compré este año. La instalación fue fácilísima y el cambio fue real desde la primera semana." } },
-
-        { "type": "faq_item", "settings": { "question": "¿Cuál es la política de devoluciones?", "answer": "Ofrecemos garantía de satisfacción de 90 días. Si por cualquier razón no estás satisfecho, te devolvemos el dinero completo sin preguntas." } },
-        { "type": "faq_item", "settings": { "question": "¿Alguna compra es final y no tiene devolución?", "answer": "Los filtros de repuesto y accesorios son de venta final una vez abiertos por razones de higiene. La ducha tiene cobertura total durante 90 días." } },
-        { "type": "faq_item", "settings": { "question": "¿Cuándo recibiré mi pedido?", "answer": "Hacemos despachos de lunes a sábado. Pedidos antes de las 2pm se despachan el mismo día. Entrega en 2 a 5 días hábiles en toda Colombia." } },
-        { "type": "faq_item", "settings": { "question": "¿Cuánto cuesta el envío?", "answer": "El envío es gratuito para todos los pedidos en Colombia. Pago contra entrega disponible sin costo adicional." } },
-
-        { "type": "problem_stat", "settings": { "number": "80%", "label": "del agua del grifo contiene cloro y metales detectables" } },
-        { "type": "problem_stat", "settings": { "number": "+10", "label": "contaminantes comunes que las tuberías viejas pueden arrastrar" } },
-        { "type": "problem_stat", "settings": { "number": "24/7", "label": "tu piel y cabello están expuestos cada vez que te duchas" } },
-
-        { "type": "cause_card", "settings": { "title": "Brotes en la piel", "description": "El cloro y los minerales obstruyen los poros y alteran la barrera de la piel." } },
-        { "type": "cause_card", "settings": { "title": "Cabello débil", "description": "El cloro reseca el cuero cabelludo y debilita el cabello desde la raíz." } },
-        { "type": "cause_card", "settings": { "title": "Piel seca e irritada", "description": "La exposición al cloro retira los aceites naturales y deja la piel tirante." } },
-        { "type": "cause_card", "settings": { "title": "Cabello quebradizo", "description": "La acumulación de químicos resta brillo y provoca quiebre y caída." } },
-
-        { "type": "before_after", "settings": {} },
-        { "type": "before_after", "settings": {} },
-
-        { "type": "video_item", "settings": { "label": "Mi piel cambió por completo" } },
-        { "type": "video_item", "settings": { "label": "Instalación en 5 minutos" } },
-        { "type": "video_item", "settings": { "label": "Adiós resequedad" } },
-        { "type": "video_item", "settings": { "label": "Mi cabello dejó de caerse" } },
-
-        { "type": "overview_point", "settings": { "title": "Filtra el cloro y las impurezas", "description": "Agua más limpia que cuida tu piel y tu cabello en cada ducha." } },
-        { "type": "overview_point", "settings": { "title": "Buena presión de agua", "description": "Diseño de cara amplia para máxima cobertura sin perder filtración." } },
-        { "type": "overview_point", "settings": { "title": "Instalación universal y rápida", "description": "Se enrosca en cualquier ducha estándar en pocos minutos." } },
-        { "type": "overview_point", "settings": { "title": "Filtro de larga duración", "description": "Cada filtro rinde varios meses de uso continuo." } },
-
-        { "type": "spec_group", "settings": { "title": "Ducha filtrante", "lines": "Cara amplia para mayor cobertura\nMaterial resistente y duradero\nCompatible con duchas estándar\nFácil de instalar sin herramientas" } },
-        { "type": "spec_group", "settings": { "title": "Filtro de repuesto", "lines": "Reemplazo cada ~90 días\nMinerales filtrantes naturales\nReduce cloro, sedimentos y metales\nFácil de cambiar" } },
-
-        { "type": "included_item", "settings": { "text": "Ducha filtrante Aguacero" } },
-        { "type": "included_item", "settings": { "text": "Filtro (instalado)" } },
-        { "type": "included_item", "settings": { "text": "Cinta de teflón" } },
-        { "type": "included_item", "settings": { "text": "Manual de instalación" } }
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Envío Gratis en Pedidos +$50"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Filtración Avanzada 9-Etapas"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "Garantía 90 Días Sin Riesgo"
+          }
+        },
+        {
+          "type": "announcement_item",
+          "settings": {
+            "text": "+15,000 Clientes Satisfechos"
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "name": "Pack Starter",
+            "unit_note": "1 cabezal de ducha AQUO",
+            "sub": "Ideal para probar",
+            "badge": "",
+            "savings": ""
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "name": "Pack Familia",
+            "unit_note": "2 cabezales de ducha AQUO",
+            "sub": "Un filtro para cada baño",
+            "badge": "MÁS POPULAR",
+            "savings": "Ahorra $15"
+          }
+        },
+        {
+          "type": "pricing_tier",
+          "settings": {
+            "name": "Pack Premium",
+            "unit_note": "3 cabezales + 3 recargas",
+            "sub": "La mejor relación precio/valor",
+            "badge": "MEJOR VALOR",
+            "savings": "Ahorra $35"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "🔒",
+            "label": "Compra 100% segura"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "↩️",
+            "label": "Devolución 90 días"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "🚚",
+            "label": "Envío gratis"
+          }
+        },
+        {
+          "type": "trust_badge",
+          "settings": {
+            "icon": "✅",
+            "label": "Certificado NSF"
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "week": "Día 1",
+            "description": "Instalación en minutos, sin herramientas. Agua más limpia desde la primera ducha."
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "week": "Semana 1",
+            "description": "Notas tu piel más suave e hidratada. El cloro ya no irrita tus ojos."
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "week": "Semana 2",
+            "description": "Tu cabello luce con más brillo y se siente más manejable."
+          }
+        },
+        {
+          "type": "timeline_item",
+          "settings": {
+            "week": "Mes 1",
+            "description": "Transformación visible. Amigos y familia notan el cambio en tu piel y cabello."
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "emoji": "💧",
+            "title": "Cabello Más Suave",
+            "description": "Elimina el cloro que reseca y daña el cabello, dejándolo sedoso y brillante.",
+            "stat_number": "87%",
+            "stat_label": "reportaron cabello más suave en 2 semanas"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "emoji": "✨",
+            "title": "Piel Clara e Hidratada",
+            "description": "Sin cloro ni metales pesados, tu piel retiene más humedad naturalmente.",
+            "stat_number": "3x",
+            "stat_label": "más hidratación vs. ducha sin filtro"
+          }
+        },
+        {
+          "type": "benefit",
+          "settings": {
+            "emoji": "🫁",
+            "title": "Vapores Más Limpios",
+            "description": "Reduce los vapores de cloro que inhalas durante la ducha.",
+            "stat_number": "64%",
+            "stat_label": "menos cloro inhalado"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Forbes"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Healthline"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "Business Insider"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "CNN"
+          }
+        },
+        {
+          "type": "marquee_item",
+          "settings": {
+            "text": "WebMD"
+          }
+        },
+        {
+          "type": "problem_stat",
+          "settings": {
+            "number": "85%",
+            "label": "del agua municipal contiene niveles detectables de cloro y subproductos."
+          }
+        },
+        {
+          "type": "problem_stat",
+          "settings": {
+            "number": "200+",
+            "label": "contaminantes distintos se han encontrado en el agua de ducha típica."
+          }
+        },
+        {
+          "type": "problem_stat",
+          "settings": {
+            "number": "10 min",
+            "label": "de ducha sin filtro puede absorber más cloro que beber 8 vasos de agua."
+          }
+        },
+        {
+          "type": "filtration_stat",
+          "settings": {
+            "percent": 99,
+            "label": "Cloro eliminado",
+            "sublabel": "Agua más suave para tu piel"
+          }
+        },
+        {
+          "type": "filtration_stat",
+          "settings": {
+            "percent": 86,
+            "label": "Metales pesados filtrados",
+            "sublabel": "Plomo · Mercurio · Arsénico"
+          }
+        },
+        {
+          "type": "filtration_stat",
+          "settings": {
+            "percent": 94,
+            "label": "Bacterias reducidas",
+            "sublabel": "Ambiente de ducha más limpio"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "avatar_emoji": "💁‍♀️",
+            "name": "Ana Rodríguez",
+            "role": "Guadalajara, MX",
+            "quote": "Increíble diferencia desde el primer día. Mi piel está mucho más hidratada y mi cabello luce mejor que nunca."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "avatar_emoji": "👨‍💼",
+            "name": "Carlos Vega",
+            "role": "Ciudad de México",
+            "quote": "Instalé el AQUO en 5 minutos. Ahora el agua sabe y se siente completamente diferente. Vale cada peso."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "avatar_emoji": "👩‍🔬",
+            "name": "Laura Mendoza",
+            "role": "Monterrey, NL",
+            "quote": "Como médica, soy escéptica de los productos de salud. Pero los datos sobre filtración de cloro son reales y este producto los cumple."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "¿Cada cuánto debo cambiar el filtro?",
+            "answer": "Recomendamos cambiar el cartucho filtrante cada 3-6 meses dependiendo de la calidad del agua en tu zona y el uso diario (aproximadamente 10,000–15,000 litros de capacidad)."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "¿Es compatible con mi regadera actual?",
+            "answer": "Sí. El filtro AQUO usa la conexión estándar universal de 1/2\" que tienen el 99% de las regaderas y tuberías de ducha. No necesitas plomero ni herramientas especiales."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "¿Realmente elimina el cloro y los metales pesados?",
+            "answer": "Sí. Nuestro sistema de 9 etapas con carbón activado, KDF-55 y cerámica ha sido probado en laboratorio independiente. Elimina hasta el 99% del cloro libre y el 86% de los metales pesados comunes."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "¿Qué pasa si no estoy satisfecho?",
+            "answer": "Ofrecemos una garantía de devolución de 90 días sin preguntas. Si por cualquier razón no ves resultados, te devolvemos el 100% de tu dinero."
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "¿Cuánto tarda en llegar?",
+            "answer": "El envío estándar tarda 3-5 días hábiles. Ofrecemos envío gratis en todos los pedidos dentro de México."
+          }
+        }
       ]
     }
   ]
