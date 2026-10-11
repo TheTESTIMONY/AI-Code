@@ -39,9 +39,11 @@
  const shell=document.getElementById('preview-shell');
  let direction='atrium',section='top';
  const sectionNames={top:'Opening','school-websites':'School websites','social-planning':'Social planning','what-we-would-have':'Benefits summary'};
- function jump(){const doc=frame.contentDocument;const target=doc?.getElementById(section);if(target){target.scrollIntoView({behavior:'instant',block:'start'});}document.getElementById('review-status').textContent=`Showing ${metadata[direction].name} · ${sectionNames[section]}`;}
+ function jump(){const doc=frame.contentDocument;const target=doc?.getElementById(section);if(target){const padding=parseFloat(getComputedStyle(doc.documentElement).scrollPaddingTop)||0;frame.contentWindow.scrollTo({top:target.getBoundingClientRect().top+frame.contentWindow.scrollY-padding,behavior:'instant'});}document.getElementById('review-status').textContent=`Showing ${metadata[direction].name} · ${sectionNames[section]}`;}
  function load(){frame.title=`${metadata[direction].name} design preview`;if(embedded[direction])frame.srcdoc=embedded[direction];else frame.src=`${direction}/index.html`;document.getElementById('review-title').textContent=metadata[direction].name;document.getElementById('direction-description').textContent=metadata[direction].description;document.getElementById('open-design').href=embedded[direction]?'#':`${direction}/index.html`;jump();}
- frame.addEventListener('load',jump);
+ let contentObserver;
+ frame.addEventListener('load',()=>{contentObserver?.disconnect();const doc=frame.contentDocument;if(doc?.body){contentObserver=new ResizeObserver(jump);contentObserver.observe(doc.body);doc.fonts.ready.then(jump);Promise.allSettled([...doc.images].map(image=>image.decode())).then(jump);}jump();});
+ new ResizeObserver(jump).observe(frame);
  document.querySelectorAll('[data-direction]').forEach(button=>button.addEventListener('click',()=>{direction=button.dataset.direction;document.querySelectorAll('[data-direction]').forEach(el=>{const selected=el===button;el.setAttribute('aria-pressed',String(selected));el.classList.toggle('active',selected);});load();}));
  document.querySelectorAll('[data-section]').forEach(button=>button.addEventListener('click',()=>{section=button.dataset.section;document.querySelectorAll('[data-section]').forEach(el=>el.setAttribute('aria-pressed',String(el===button)));jump();}));
  document.querySelectorAll('[data-device]').forEach(button=>button.addEventListener('click',()=>{shell.classList.toggle('mobile',button.dataset.device==='mobile');document.querySelectorAll('[data-device]').forEach(el=>el.setAttribute('aria-pressed',String(el===button)));setTimeout(jump,0);}));
