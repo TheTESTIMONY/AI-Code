@@ -2,7 +2,7 @@
 
 Prepared 11 October 2026. Recommendation: **01 / Clear path**, with the warmer imagery of **03 / Shared future** where useful.
 
-Your page already has a credible visual identity. Its biggest opportunity is a shorter, more decisive story: show what changes, demonstrate one school’s journey, explain the investment, then invite a discussion. More decoration would contribute less than better editing and a stronger hierarchy.
+Your page already has a credible visual identity and a natural, explanatory proposal voice. The design should help readers follow what you are proposing, why it would help, and what you would do. The three concepts retain your original opening and first-person language. Editing is limited to reducing repeated summaries and grouping related explanations; the visual treatment changes between concepts, while the pitch keeps the same voice.
 
 ## Scope and evidence
 
@@ -30,8 +30,8 @@ Its published design snapshot describes a predominantly white canvas, near-black
 
 | Design dimension | Reference strength | Your HTML today | Recommended improvement |
 | --- | --- | --- | --- |
-| Purpose and story | Clear value before detailed explanation | Thoughtful proposal, but several sections revisit websites, follow-ups and reports | Build one sequence: outcome → demonstration → school identities → reporting → investment → rollout → discussion |
-| Opening | A strong promise supported by a visible next action | Long, conversational headline plus a dense explanatory paragraph | Use a short benefit headline; keep the personal proposal voice in the supporting copy |
+| Purpose and story | Clear value before detailed explanation | Thoughtful proposal, but several sections revisit websites, follow-ups and reports | Keep the explanation of the current situation and proposed platform, then show the workflow, school identities, reporting, costs, rollout and next conversation |
+| Opening | A strong promise supported by a visible next action | A conversational opening that introduces what you would build and why | Retain the original headline and introduction; adapt the type size and layout to full sentences |
 | Navigation | Strong grouping and an obvious conversion destination | Sticky navigation, mobile menu and reading progress already exist | Keep three key anchors and one discussion action; no need for a commercial mega-menu |
 | Composition | Large focal media balanced with shorter text blocks | Many substantial text sections and repeated benefit summaries | Alternate one wide scene, one split composition and one compact comparison; vary the rhythm |
 | Colours | Neutral space makes the action accent meaningful | Navy `#0D395C`, green `#28C574`, near-white `#FAFAFA`, mint surfaces | Keep this identity. Use green selectively; use navy text on bright green rather than white small text |
@@ -39,7 +39,7 @@ Its published design snapshot describes a predominantly white canvas, near-black
 | Imagery | Media explains either a product action or a human outcome | Conceptual community photography and school artwork are already embedded | Keep people in the story, but make a school’s next action the hero’s concrete proof; retain conceptual-image captions |
 | Product presentation | Media makes otherwise abstract capabilities understandable | Clickable journey, reporting tabs and school identity switch are already useful | Elevate one journey example earlier; reduce surrounding repetition; use readable fictional records |
 | Surfaces and details | Consistent corners, borders, shadows and icon treatment | Good design tokens, but many later CSS overrides complicate maintenance | Use one small radius scale per concept, one shadow family and one authoritative responsive rule set |
-| Calls to action | Clear distinction between taking action and learning more | Several long action labels compete for attention | “Explore the proposed setup” for learning; “Let’s discuss” for the next decision; costs remain easy to find |
+| Calls to action | Clear distinction between taking action and learning more | Several long action labels compete for attention | Retain “See how the work would connect”, “See the costs” and “Questions for our next conversation” |
 | Credibility | Concrete proof appears near the relevant promise | Four schools over eight months; honest qualifications and illustrative labels | Use supplied context as a compact proof strip. Add approved real school examples later; do not fabricate testimonials |
 | Motion | Demonstration is a useful role for movement; exact reference behaviour unverified | 300ms entries, 150ms transitions, scroll reveals and a timed workflow are present | Concentrate motion on changes of state. Add no ambient looping or scroll hijacking. Preserve pause and reduced motion |
 | Mobile | A simple visual hierarchy is the transferable principle; live reference layout untested | Several responsive breakpoints and mobile-specific composition changes | Stack scenes, collapse low-priority navigation, avoid miniature desktop dashboards, and keep controls at least 40–48px tall |
@@ -49,15 +49,19 @@ Its published design snapshot describes a predominantly white canvas, near-black
 
 ### Keep these strengths
 
-The source already has appropriate proposal language, meaningful interactions, a useful Notion cost toggle, restrained branding, and clear distinctions between website clicks and app outcomes. It is more thoughtful than a generic template. The concepts preserve those strengths while reducing repeated explanation.
+The source already has appropriate proposal language, meaningful interactions, a useful Notion cost toggle, restrained branding, and clear distinctions between website clicks and app outcomes. It is more thoughtful than a generic template. The concepts preserve those strengths while removing duplicated summaries.
 
 ### Change these first
 
-1. **Shorten the opening.** Readers should understand the proposal before they meet platform details.
-2. **Promote the demonstration.** Show one school, one owner and one next action early.
+1. **Preserve the opening and the voice.** Keep the original headline and explanation. Introduce GoHighLevel plainly in “What I’m proposing”, and describe what you would set up.
+2. **Explain before demonstrating.** Keep the inquiry example and the plain-language definition of a pipeline, then let readers follow a school through the stages.
 3. **Remove repeated summaries.** The recap table and “everything together” section largely repeat earlier material. Let the rollout provide new information instead.
 4. **Give each section one job.** Brand control, workflow, reporting, cost and rollout should each answer a different question.
 5. **Simplify the implementation after selecting a direction.** Consolidate the many CSS overrides; test real rendering, contrast, screen-reader announcements and mobile interaction before production.
+
+## Copy used across all three designs
+
+The original headline and introduction are retained. “I’m proposing”, “I would”, “we could” and “we would” make it clear that the page is a person explaining a proposal to their team. The copy explains the platform, the pipeline, the follow-up conditions, the reporting limits, and the work covered by the implementation fee in complete sentences. The main reductions are the repeated benefits summary and recap table. The three designs use the same substantive proposal wording; their layout, typography, colour and section order provide the variation.
 
 ## Three directions
 
@@ -65,9 +69,9 @@ The source already has appropriate proposal language, meaningful interactions, a
 
 **Personality:** calm, capable, approachable. Best for presenting the proposal to the HBCU Change team.
 
-**Composition:** split hero with a concise promise, campus image and overlapping example record. A compact context strip leads directly into the school workflow. School identities, reporting, investment and a staged rollout follow.
+**Composition:** split hero using the original opening, a campus image and overlapping example record. A two-column introduction explains the current situation and what you are proposing. The school workflow, school identities, reporting, costs and staged rollout follow.
 
-**Palette:** navy `#0D395C`, green `#28C574`, near-white `#FAFCFB`, pale mint `#EDF5F0`. **Type:** the supplied Manrope, 44–78px hero, 33–48px section headings, 16–18px body. **Media:** community image plus functional, illustrative UI. **Motion:** a brief entrance, subtle control feedback and user-controlled workflow changes.
+**Palette:** navy `#0D395C`, green `#28C574`, near-white `#FAFCFB`, pale mint `#EDF5F0`. **Type:** the supplied Manrope, 36–56px hero, 33–48px section headings, 16–18px body. **Media:** community image plus functional, illustrative UI. **Motion:** a brief entrance, subtle control feedback and user-controlled workflow changes.
 
 **Reference translation:** Calendly’s clear reading path plus CleanShot’s explanatory product framing, expressed in HBCU Change’s existing identity.
 
@@ -77,9 +81,9 @@ The source already has appropriate proposal language, meaningful interactions, a
 
 **Personality:** focused, contemporary, product-oriented. Best when the audience needs to understand the proposed operating setup.
 
-**Composition:** centered large-type opening over a wide, dark workspace scene. A horizontal step selector opens a detailed school record; reporting appears before the school-brand showcase.
+**Composition:** the same original opening, centered above a wide, dark workspace scene. The introduction explains the proposal before a horizontal step selector opens a detailed school record. Reporting appears before the school-brand showcase.
 
-**Palette:** deep navy `#081B2A`, elevated navy `#102B3E`, soft white `#F5FAF7`, luminous mint `#70EDAB`. **Type:** Manrope, 48–88px display with lighter headline weight. **Media:** layered fictional workspace components; campus artwork appears later. **Motion:** deliberate changes in the record, with a finite walkthrough and pause control. No endless moving background.
+**Palette:** deep navy `#081B2A`, elevated navy `#102B3E`, soft white `#F5FAF7`, luminous mint `#70EDAB`. **Type:** Manrope, 38–66px display with lighter headline weight. **Media:** layered fictional workspace components; campus artwork appears later. **Motion:** deliberate changes in the record, with a finite walkthrough and pause control. No endless moving background.
 
 **Reference translation:** a stronger interpretation of CleanShot’s product theatre. The dark canvas is a proposed creative direction, not a claim that CleanShot’s entire homepage is dark.
 
@@ -89,7 +93,7 @@ The source already has appropriate proposal language, meaningful interactions, a
 
 **Personality:** warm, confident, rooted in community. Best for a relationship-led leadership conversation.
 
-**Composition:** asymmetric editorial hero, tall arched campus photograph, short chapter introduction, school identities first, then the operational demonstration. A dark closing panel returns to the decision.
+**Composition:** asymmetric editorial hero using the original opening, a tall arched campus photograph, and an introduction explaining the proposal. School identities come before the operational demonstration. A dark closing panel uses the original invitation to discuss priorities.
 
 **Palette:** warm paper `#F7F3EA`, navy `#0D395C`, green `#28C574`, muted sage `#819185`. **Type:** Georgia display headings paired with the supplied Manrope for body and interface text. Georgia is an intentionally available system serif; no unlicensed reference font is copied. **Media:** conceptual community imagery has greater prominence. **Motion:** quiet entrances and functional state changes only.
 

@@ -4,6 +4,9 @@ Open index.html in a modern browser to compare all concepts and the original.
 Each clear.html, studio.html and editorial.html is also standalone and works offline.
 The report is available as review.html and design-review.md.
 
+The original opening and explanatory proposal tone are retained in all three designs.
+Repeated recap sections have been removed.
+
 All records and illustrations are conceptual. Costs are carried over from the supplied proposal.
 These are interactive design concepts, not a connected operations platform.
 

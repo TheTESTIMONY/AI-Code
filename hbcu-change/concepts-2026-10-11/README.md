@@ -10,6 +10,8 @@ Unzip the package and open **index.html** in your browser to compare the three c
 | **02 / In the flow** | Dark, immersive, and focused on the proposed workflow. |
 | **03 / Shared future** | Warm, editorial, and focused on the school community. |
 
+All three designs retain the original opening and the natural first-person proposal voice. They explain what is being proposed, why it would help, and what the author would set up; repeated recap sections have been removed.
+
 Each concept is also a standalone HTML file with embedded imagery and fonts. Interactions include school identity switching, a four-step walkthrough with pause, a cost toggle, FAQs, and a discussion agenda.
 
 Read the [full design comparison](design-review.md) for the evaluation of Calendly, CleanShot, and the supplied proposal.
