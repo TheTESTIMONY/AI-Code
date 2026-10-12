@@ -1,0 +1,238 @@
+{
+  "created": "2026-10-12",
+  "skill": "imagegen-frontend-web",
+  "type": "Generated section design references",
+  "images": [
+    {
+      "theme": "clean",
+      "number": 1,
+      "section": "hero",
+      "title": "Opening proposal",
+      "file": "clean/01-hero.png",
+      "width": 1672,
+      "height": 940,
+      "description": "The original headline anchors a campus-led opening, with one main action and a quieter cost link.",
+      "sha256": "fee4b7b51757b4acace00f3ec8835b44080486c2bfb574fb20702164536a3edb"
+    },
+    {
+      "theme": "clean",
+      "number": 2,
+      "section": "context",
+      "title": "Why this change",
+      "file": "clean/02-context.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A workspace scene gives the explanation a concrete setting while keeping the first-person proposal voice.",
+      "sha256": "0dc9b0a982c410a5b9a76d017726ce12943ba6365da05959494906bed9e62e65"
+    },
+    {
+      "theme": "clean",
+      "number": 3,
+      "section": "workflow",
+      "title": "The school inquiry journey",
+      "file": "clean/03-workflow.png",
+      "width": 1672,
+      "height": 941,
+      "description": "Four side-by-side panels show the stages of a school inquiry. Discussion opens to a labelled illustrative record.",
+      "sha256": "226975b331b6305d50aa396cdb4bbea9eb67055851c459e4bc5a4989ad0f593d"
+    },
+    {
+      "theme": "clean",
+      "number": 4,
+      "section": "schools",
+      "title": "Each school’s identity",
+      "file": "clean/04-schools.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A fictional school website demonstrates individual fonts, imagery and colours. School A and School B are examples.",
+      "sha256": "9bd91e7d11b4b28f34f816fd607909bb944c9d99566b06472663a00920bf4f9d"
+    },
+    {
+      "theme": "clean",
+      "number": 5,
+      "section": "reporting",
+      "title": "Reporting and next actions",
+      "file": "clean/05-reporting.png",
+      "width": 1672,
+      "height": 941,
+      "description": "The reporting structure focuses on next actions, campaign response and the separate scope of app data.",
+      "sha256": "390d39d86b3fccf5620b3ca3844327b3c4827d1c3e4e727d592b7d59534af463"
+    },
+    {
+      "theme": "clean",
+      "number": 6,
+      "section": "rollout",
+      "title": "A staged rollout",
+      "file": "clean/06-rollout.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A campus pathway supports the staged-migration explanation. Existing sites stay available while replacements are checked.",
+      "sha256": "b76b04f78c1ef20b9027897e68ccbf9e8f548d021757109df5606c1497c650a6"
+    },
+    {
+      "theme": "clean",
+      "number": 7,
+      "section": "questions",
+      "title": "Scope and clarifications",
+      "file": "clean/07-questions.png",
+      "width": 1672,
+      "height": 941,
+      "description": "Open question-and-answer rows explain what the proposal includes and what remains separate.",
+      "sha256": "c3a6bc8d939c89a4b3d79cc689962df779718a4d8fdc644170d1e0091b1097ac"
+    },
+    {
+      "theme": "clean",
+      "number": 8,
+      "section": "costs",
+      "title": "Costs and qualifications",
+      "file": "clean/08-costs.png",
+      "width": 1672,
+      "height": 941,
+      "description": "The $95/$97 comparison retains the +$10 Notion option and the usage and implementation qualifications.",
+      "sha256": "2b989434fd323081c9fe426b2d3b888fdb68f51daac716e043d628e5f983ebd4"
+    },
+    {
+      "theme": "clean",
+      "number": 9,
+      "section": "closing",
+      "title": "The next decision",
+      "file": "clean/09-closing.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A campus scene supports the invitation to choose priorities and agree a scope.",
+      "sha256": "94ca78a439596aeea5fe24fc6290c61acacfefc23574cd80b6b3e2e6fb505a3a"
+    },
+    {
+      "theme": "clean",
+      "number": 10,
+      "section": "conversation",
+      "title": "Discussion priorities",
+      "file": "clean/10-conversation.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A meeting-table scene accompanies the question about which websites, follow-ups and reports matter most.",
+      "sha256": "f051ba47f98fe03199140d445dddb7d3801dfbaefc98f94b8c1c5e7d2f4a7f2a"
+    },
+    {
+      "theme": "studio",
+      "number": 1,
+      "section": "hero",
+      "title": "Opening proposal",
+      "file": "studio/01-hero.png",
+      "width": 1672,
+      "height": 941,
+      "description": "The original headline anchors a campus-led opening, with one main action and a quieter cost link.",
+      "sha256": "9bb4bb22434a6f947ea33eb45c9b7d4331a9dc136f7766f57fe35c6369276fb6"
+    },
+    {
+      "theme": "studio",
+      "number": 2,
+      "section": "context",
+      "title": "The proposed shared workspace",
+      "file": "studio/02-context.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A workspace scene gives the explanation a concrete setting while keeping the first-person proposal voice.",
+      "sha256": "f16f7984dec6d7c267b04798296ae41d2cd7d1afcfa02ab97f3219b89f6bebda"
+    },
+    {
+      "theme": "studio",
+      "number": 3,
+      "section": "work-strip",
+      "title": "Work-category interlude",
+      "file": "studio/03-work-strip.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A quiet strip names the work categories. It represents Studio’s existing pausable typographic interlude.",
+      "sha256": "588a34f8baa71cd97335e413e8af16635b338d79d472ea91dd31b98d25dcb184"
+    },
+    {
+      "theme": "studio",
+      "number": 4,
+      "section": "workflow",
+      "title": "The inquiry workflow",
+      "file": "studio/04-workflow.png",
+      "width": 1672,
+      "height": 941,
+      "description": "Four side-by-side panels show the stages of a school inquiry. Discussion opens to a labelled illustrative record.",
+      "sha256": "43446883a0dbcf500a2328ec2edfb8cf35c2cc8c1dd191cc080aca15eedc7eb4"
+    },
+    {
+      "theme": "studio",
+      "number": 5,
+      "section": "reporting",
+      "title": "Reporting that supports decisions",
+      "file": "studio/05-reporting.png",
+      "width": 1672,
+      "height": 941,
+      "description": "The reporting structure focuses on next actions, campaign response and the separate scope of app data.",
+      "sha256": "666997fa7ca4f913972a1e93f767412b473e0c8cdd74022de49e8224a59417b4"
+    },
+    {
+      "theme": "studio",
+      "number": 6,
+      "section": "schools",
+      "title": "Independent school identities",
+      "file": "studio/06-schools.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A fictional school website demonstrates individual fonts, imagery and colours. School A and School B are examples.",
+      "sha256": "b720e6b810c8da78476bfbfba98b073560b272b42359b4517057ac8451352d6b"
+    },
+    {
+      "theme": "studio",
+      "number": 7,
+      "section": "rollout",
+      "title": "Building and moving in stages",
+      "file": "studio/07-rollout.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A campus pathway supports the staged-migration explanation. Existing sites stay available while replacements are checked.",
+      "sha256": "c41a398a1634efa8c225fe6d57d33fbef01848d7ecc7dab4423ebdf0008b988e"
+    },
+    {
+      "theme": "studio",
+      "number": 8,
+      "section": "questions",
+      "title": "Clear scope boundaries",
+      "file": "studio/08-questions.png",
+      "width": 1672,
+      "height": 940,
+      "description": "Open question-and-answer rows explain what the proposal includes and what remains separate.",
+      "sha256": "d041bffb5375018d86699a8f1139a57d882556b5eb3194f220bd48c6fb5f677d"
+    },
+    {
+      "theme": "studio",
+      "number": 9,
+      "section": "costs",
+      "title": "The subscription comparison",
+      "file": "studio/09-costs.png",
+      "width": 1672,
+      "height": 941,
+      "description": "The $95/$97 comparison retains the +$10 Notion option and the usage and implementation qualifications.",
+      "sha256": "a167cf24e8c67513e1ad7c2ac24b269509ad7eb86b18abdb0c8ef6f05f6b7d43"
+    },
+    {
+      "theme": "studio",
+      "number": 10,
+      "section": "closing",
+      "title": "Agreeing the next step",
+      "file": "studio/10-closing.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A campus scene supports the invitation to choose priorities and agree a scope.",
+      "sha256": "996d1e90a092b6b86c9e91fbeb81176760433f387e45a734c48c5f6368653667"
+    },
+    {
+      "theme": "studio",
+      "number": 11,
+      "section": "conversation",
+      "title": "Questions for the conversation",
+      "file": "studio/11-conversation.png",
+      "width": 1672,
+      "height": 941,
+      "description": "A meeting-table scene accompanies the question about which websites, follow-ups and reports matter most.",
+      "sha256": "b931b0142c51f674fc6497bbee314c025102532b551665f7950b80f49473b3ac"
+    }
+  ]
+}
