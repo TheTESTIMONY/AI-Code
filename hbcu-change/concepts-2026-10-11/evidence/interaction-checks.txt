@@ -1,0 +1,14 @@
+clear / reduced motion true: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+clear / reduced motion false: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+studio / reduced motion true: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+studio / reduced motion false: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+editorial / reduced motion true: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+editorial / reduced motion false: content, navigation, keyboard workflow, brand switch, costs, discussion, GSAP lifecycle PASS
+clear: mobile pinning disabled PASS
+studio: mobile pinning disabled PASS
+editorial: mobile pinning disabled PASS
+clear: original headline and proposal paragraphs preserved, no-JS questions visible, metadata and alt checks PASS
+studio: original headline and proposal paragraphs preserved, no-JS questions visible, metadata and alt checks PASS
+editorial: original headline and proposal paragraphs preserved, no-JS questions visible, metadata and alt checks PASS
+All revised concept and supporting-page local destinations and unique IDs PASS
+Viewer selection, loading, error, retry, full-page link and width controls PASS

@@ -1,6 +1,6 @@
 # HBCU Change — design review & three concepts
 
-Prepared 11 October 2026. Recommendation: **01 / Clear path**, with the warmer imagery of **03 / Shared future** where useful.
+Reference research prepared 11 October 2026; implementation revised 12 October 2026. Recommendation: **01 / Clear path**, with the warmer imagery of **03 / Shared future** where useful.
 
 Your page already has a credible visual identity and a natural, explanatory proposal voice. The design should help readers follow what you are proposing, why it would help, and what you would do. The three concepts retain your original opening and first-person language. Editing is limited to reducing repeated summaries and grouping related explanations; the visual treatment changes between concepts, while the pitch keeps the same voice.
 
@@ -32,16 +32,16 @@ Its published design snapshot describes a predominantly white canvas, near-black
 | --- | --- | --- | --- |
 | Purpose and story | Clear value before detailed explanation | Thoughtful proposal, but several sections revisit websites, follow-ups and reports | Keep the explanation of the current situation and proposed platform, then show the workflow, school identities, reporting, costs, rollout and next conversation |
 | Opening | A strong promise supported by a visible next action | A conversational opening that introduces what you would build and why | Retain the original headline and introduction; adapt the type size and layout to full sentences |
-| Navigation | Strong grouping and an obvious conversion destination | Sticky navigation, mobile menu and reading progress already exist | Keep three key anchors and one discussion action; no need for a commercial mega-menu |
+| Navigation | Strong grouping and an obvious conversion destination | Sticky navigation, mobile menu and reading progress already exist | Use a short anchor menu and a clearly named discussion action; no need for a commercial mega-menu |
 | Composition | Large focal media balanced with shorter text blocks | Many substantial text sections and repeated benefit summaries | Alternate one wide scene, one split composition and one compact comparison; vary the rhythm |
 | Colours | Neutral space makes the action accent meaningful | Navy `#0D395C`, green `#28C574`, near-white `#FAFAFA`, mint surfaces | Keep this identity. Use green selectively; use navy text on bright green rather than white small text |
-| Typography | Clear distance between display, supporting copy and interface labels | Embedded variable Manrope; large responsive headings; small visual labels | Keep Manrope for continuity. Simplify heading lengths; make essential diagram text 13–16px and body copy 16–18px |
-| Imagery | Media explains either a product action or a human outcome | Conceptual community photography and school artwork are already embedded | Keep people in the story, but make a school’s next action the hero’s concrete proof; retain conceptual-image captions |
+| Typography | Clear distance between display, supporting copy and interface labels | Embedded variable Manrope; large responsive headings; small visual labels | Retain the wording; distinguish the concepts through Outfit, Satoshi with Manrope fallback, and Newsreader with Geist. Keep explanatory text readable |
+| Imagery | Media explains either a product action or a human outcome | Conceptual community photography and school artwork are already embedded | Use the supplied campus illustration consistently, then show a school’s next action through an explicitly illustrative record |
 | Product presentation | Media makes otherwise abstract capabilities understandable | Clickable journey, reporting tabs and school identity switch are already useful | Elevate one journey example earlier; reduce surrounding repetition; use readable fictional records |
 | Surfaces and details | Consistent corners, borders, shadows and icon treatment | Good design tokens, but many later CSS overrides complicate maintenance | Use one small radius scale per concept, one shadow family and one authoritative responsive rule set |
 | Calls to action | Clear distinction between taking action and learning more | Several long action labels compete for attention | Retain “See how the work would connect”, “See the costs” and “Questions for our next conversation” |
-| Credibility | Concrete proof appears near the relevant promise | Four schools over eight months; honest qualifications and illustrative labels | Use supplied context as a compact proof strip. Add approved real school examples later; do not fabricate testimonials |
-| Motion | Demonstration is a useful role for movement; exact reference behaviour unverified | 300ms entries, 150ms transitions, scroll reveals and a timed workflow are present | Concentrate motion on changes of state. Add no ambient looping or scroll hijacking. Preserve pause and reduced motion |
+| Credibility | Concrete proof appears near the relevant promise | Four schools over eight months; honest qualifications and illustrative labels | Retain supplied context in the explanatory copy. Add approved real school examples later; do not fabricate testimonials or add hero proof badges |
+| Motion | Demonstration is a useful role for movement; exact reference behaviour unverified | 300ms entries, 150ms transitions, scroll reveals and a timed workflow are present | Use the requested GSAP scroll treatments with global pause and static reduced-motion endpoints. Keep typography strips pausable and native scrolling intact |
 | Mobile | A simple visual hierarchy is the transferable principle; live reference layout untested | Several responsive breakpoints and mobile-specific composition changes | Stack scenes, collapse low-priority navigation, avoid miniature desktop dashboards, and keep controls at least 40–48px tall |
 | Accessibility | Readable contrast and predictable interactions matter more than polish | Skip link, focus styles, keyboard tabs, modal focus return, reduced motion and forced-colour rules are strong foundations | Retain these strengths. The original animation handler treats keyboard activation as “finish”; let keyboard users operate the same demonstration |
 | Performance | Perceived quality depends on fast, stable media | Single file about 955KB, with embedded assets and repeated campus image data | Self-contained concepts are convenient for review; for production, deduplicate media, serve font/image files separately and lazy-load below-fold images |
@@ -63,48 +63,24 @@ The source already has appropriate proposal language, meaningful interactions, a
 
 The original headline and introduction are retained. “I’m proposing”, “I would”, “we could” and “we would” make it clear that the page is a person explaining a proposal to their team. The copy explains the platform, the pipeline, the follow-up conditions, the reporting limits, and the work covered by the implementation fee in complete sentences. The main reductions are the repeated benefits summary and recap table. The three designs use the same substantive proposal wording; their layout, typography, colour and section order provide the variation.
 
-## Three directions
+## Three revised directions
 
-### 01 / Clear path — recommended
+### Clear path — recommended
 
-**Personality:** calm, capable, approachable. Best for presenting the proposal to the HBCU Change team.
+A full-width conversational headline leads into an asymmetric campus scene. A dense introduction explains the current situation, the platform, and what I would set up. The school journey expands horizontally on desktop; reporting uses a pinned heading and the rollout cards stack as the reader scrolls. Outfit pairs navy `#0D395C` with restrained green `#246B46` on cool, pale green surfaces. This remains the clearest direction for discussing the proposal with the team.
 
-**Composition:** split hero using the original opening, a campus image and overlapping example record. A two-column introduction explains the current situation and what you are proposing. The school workflow, school identities, reporting, costs and staged rollout follow.
+### In the flow — immersive demonstration
 
-**Palette:** navy `#0D395C`, green `#28C574`, near-white `#FAFCFB`, pale mint `#EDF5F0`. **Type:** the supplied Manrope, 36–56px hero, 33–48px section headings, 16–18px body. **Media:** community image plus functional, illustrative UI. **Motion:** a brief entrance, subtle control feedback and user-controlled workflow changes.
+A wide opening sits above an editorial split of explanatory copy and a campus scene. The dark navy `#102B37` canvas remains consistent throughout, with pale mint `#9ECBAC` accents. Satoshi loads from Fontshare when connected; embedded Manrope preserves an offline fallback. Image scale/fade and word-by-word scroll emphasis support the demonstration. The horizontal school journey and a pausable strip of actual work categories make this the most animated direction.
 
-**Reference translation:** Calendly’s clear reading path plus CleanShot’s explanatory product framing, expressed in HBCU Change’s existing identity.
+### Shared future — editorial and human
 
-**Trade-off:** the most practical direction, but less visually dramatic than the other two.
+A centred, expansive opening and large campus illustration lead into an asymmetric explanation. Newsreader display type pairs with Geist body text on warm paper `#F4F2E9`, with restrained green `#38694D`. Small images sit within school-identity typography. The school selector remains vertical; reporting headings pin and rollout cards stack on suitable desktop screens. The closing stays in the warm palette. This is the most editorial direction.
 
-### 02 / In the flow — immersive demonstration
+## Included behaviour and review limits
 
-**Personality:** focused, contemporary, product-oriented. Best when the audience needs to understand the proposed operating setup.
+All three retain the original headline, first-person proposal voice, school identity switching, a four-step example with play/pause, and the $97/$107 cost comparison. FAQs are now visible question-and-answer rows. The discussion agenda is an in-page carousel with an optional full list. No form sends information and no system migration occurs.
 
-**Composition:** the same original opening, centered above a wide, dark workspace scene. The introduction explains the proposal before a horizontal step selector opens a detailed school record. Reporting appears before the school-brand showcase.
+The package includes an interactive comparison viewer, the unchanged original, three standalone concept pages, this reference analysis, revision self-review, privacy/review notes, a 404 page, and dependency notices. Core imagery, JavaScript and fallback fonts are embedded. Studio alone optionally requests its Satoshi font from Fontshare.
 
-**Palette:** deep navy `#081B2A`, elevated navy `#102B3E`, soft white `#F5FAF7`, luminous mint `#70EDAB`. **Type:** Manrope, 38–66px display with lighter headline weight. **Media:** layered fictional workspace components; campus artwork appears later. **Motion:** deliberate changes in the record, with a finite walkthrough and pause control. No endless moving background.
-
-**Reference translation:** a stronger interpretation of CleanShot’s product theatre. The dark canvas is a proposed creative direction, not a claim that CleanShot’s entire homepage is dark.
-
-**Trade-off:** communicates operations quickly, but may feel more like a software product. Prominent concept labels prevent the demonstration from implying a finished system exists.
-
-### 03 / Shared future — editorial and human
-
-**Personality:** warm, confident, rooted in community. Best for a relationship-led leadership conversation.
-
-**Composition:** asymmetric editorial hero using the original opening, a tall arched campus photograph, and an introduction explaining the proposal. School identities come before the operational demonstration. A dark closing panel uses the original invitation to discuss priorities.
-
-**Palette:** warm paper `#F7F3EA`, navy `#0D395C`, green `#28C574`, muted sage `#819185`. **Type:** Georgia display headings paired with the supplied Manrope for body and interface text. Georgia is an intentionally available system serif; no unlicensed reference font is copied. **Media:** conceptual community imagery has greater prominence. **Motion:** quiet entrances and functional state changes only.
-
-**Reference translation:** the references’ hierarchy and restraint, adapted to HBCU Change’s human context. This is the most independent art direction.
-
-**Trade-off:** the proposal feels more personal, while the platform mechanism arrives later in the story.
-
-## What is included and what is illustrative
-
-Three complete, responsive concept pages; school identity switching; a four-step workflow with play/pause; a $97/$107 base-cost toggle; FAQ disclosures; and a discussion-agenda modal. Pricing is copied from the proposal, not independently verified. Images and school records are conceptual. No forms submit information, no messages are sent, and no platform migration is performed.
-
-The package includes an interactive concept viewer, the original for comparison, three standalone HTML files and this review. Each concept contains its own font and imagery for offline use. Review mode’s mobile setting changes the viewport to 390px; it is a comparison aid, not a substitute for real-device testing.
-
-Validation: HTML structure, local links, JavaScript syntax and simulated DOM interactions are checked. Live browser rendering, screenshots, visual overflow and real-device accessibility remain unverified because the supported browser tool is unavailable in this session.
+The viewer’s 390px mode is a comparison aid. Automated DOM interactions, GSAP lifecycle, palette contrast calculations and headline font metrics passed. Browser screenshots, real rendered overflow, screen-reader experience and real-device performance remain unverified because the supported browser tool was unavailable. See the revision self-review for exact evidence and limits.
