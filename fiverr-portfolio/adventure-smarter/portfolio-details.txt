@@ -1,0 +1,43 @@
+BRAND
+Adventure Smarter
+
+WEBSITE
+https://www.adventuresmarter.org
+
+TITLE (46/50 characters)
+Adventure Smarter - Squarespace Travel Website
+
+ROLE
+Website Designer and Developer
+
+INDUSTRY
+Travel & Tourism
+
+SKILLS (exactly five)
+1. Squarespace
+2. Website Design
+3. Website Development
+4. UI Design
+5. UX Design
+
+DESCRIPTION (1193/1400 characters, including spaces and paragraph breaks)
+I designed and developed Adventure Smarter's Squarespace website to help visitors move from travel ideas to a planning conversation. The main challenge was explaining what a travel advisor handles, why the service is worth considering, and how to get started without making the site feel like another research task.
+
+I organised the pages around those decisions. The homepage introduces the advisor and her specialisms, while the Services page separates the full planning package from additional support. Package details, a five-step planning process and FAQs make the scope easier to understand before an inquiry.
+
+To build trust, I made room for the founder's story, client feedback, press mentions and sample itineraries. Those sections give visitors context for the service beyond destination photography. I also connected planning calls and inquiry options with clear buttons, and included email-guide sections for people who are still comparing their options.
+
+The visual direction uses travel imagery, map details and a warm cream-and-blue palette to keep the brand personal. The result is a site that helps visitors explore the service, understand the process and find their next step.
+
+OPTIONAL FACTUAL FIELDS
+Project cost, duration and start date: use your actual project records.
+
+RESEARCH SOURCES
+https://www.adventuresmarter.org/
+https://www.adventuresmarter.org/services
+https://www.adventuresmarter.org/about-us
+https://www.adventuresmarter.org/start-planning
+https://www.adventuresmarter.org/sample-itineraries
+
+NOTES
+Descriptions use plausible design rationale based on publicly accessible features and the supplied role; they do not assert measured results. The site currently carries an agency design credit; your contribution is stated as supplied. Scheduling and inquiry submissions were not tested. Supplied screenshots show some earlier wording than the current live site.

@@ -1,0 +1,60 @@
+BRAND
+Solates
+
+PROJECT TITLE (44/50 characters)
+Solates - Squarespace Pilates Studio Website
+
+ROLE
+Squarespace Website designer & Website content writer
+
+INDUSTRY
+Fitness & Wellness
+
+PLATFORM
+Squarespace
+
+SKILLS (exactly 5)
+1. Squarespace
+2. Website Design
+3. Website Content Writing
+4. UX Design
+5. UI Design
+
+WEBSITE URL
+https://solates.com/
+
+PROJECT DESCRIPTION (1168/1400 characters)
+I designed the Solates website and shaped its content around a simple question: how do you explain a studio that offers Pilates, sound healing, private sessions and training without overwhelming someone who just wants to try a class?
+
+My approach was to introduce the studio's method first, then give each offering a clear place in the site. I organised the class content around what each session involves, who it suits and its level, so visitors can compare options before booking. Pricing and membership information sit alongside clear routes to the schedule, booking options and studio app.
+
+The content also supports people who need more context. The founder story and testimonials introduce the person behind the practice, while FAQs cover preparation, parking and common first-visit questions. Private sessions, events, sound bowls and teacher training have their own routes instead of competing for attention on one page.
+
+I paired that structure with calm beige tones, studio photography and clear headings. The finished site brings the studio's different services together and helps visitors move from understanding the experience to choosing their next step.
+
+CHARACTER COUNT METHOD
+Counts include spaces, punctuation and paragraph breaks (each newline counts as one character). Count excludes field labels.
+
+OTHER FIVERR FIELDS
+Project duration, cost and start date: use the actual project details; not supplied.
+
+IMAGE UPLOAD ORDER
+01-cover.png
+02-website-showcase.png
+03-project-highlights.png
+All images: 1280 x 769 pixels, RGB PNG.
+
+RESEARCH SOURCES
+https://solates.com/
+https://solates.com/solatesclasses
+https://solates.com/solates-privates
+https://solates.com/about
+https://solates.com/contact
+https://solates.com/events
+https://solates.com/sound-bowls
+https://solates.com/shop
+https://solates.com/shop/sound-bowls
+https://solates.com/shop/courses
+
+RESEARCH NOTE
+Public pages and user screenshots reviewed. External booking transactions, submissions and purchases were not tested. The description uses a plausible design/content rationale for the supplied role, without claiming client history or measured outcomes.

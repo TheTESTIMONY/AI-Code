@@ -1,0 +1,35 @@
+PROJECT TITLE (39/50 characters)
+IACS INC - Squarespace Security Website
+
+ROLE
+Squarespace developer
+
+INDUSTRY
+Security & Systems Integration
+
+WEBSITE
+https://www.iacsinc.co/
+
+SKILLS (exactly five)
+1. Squarespace
+2. Website Development
+3. Front-End Development
+4. Website Customization
+5. Website Layout
+
+PROJECT DESCRIPTION (1236/1400 characters; spaces and paragraph breaks included)
+I developed the IACS INC website to help visitors make sense of a wide range of security and integration services. A business owner looking for access control has different questions from a homeowner exploring smart security, so the page structure needed to give each visitor a clear starting point.
+
+My approach was to organise the site around those needs. The homepage introduces commercial, federal and residential services, with separate routes to CCTV, network cabling, access control and intrusion detection. Dedicated pages provide room for product information, manufacturer references and explanations of what each service covers.
+
+I built out the residential security presentation with smart-home features, an Alarm.com reference, a demonstration video and an accordion for advanced features. The service-process section explains consultation, installation and ongoing support, while consultation and contact buttons give visitors a next step when they are ready to ask questions.
+
+Company background, partner brands and certification details support the service information. The finished website brings technical content into a clearer structure, helping visitors explore the available options and reach out about their needs.
+
+OPTIONAL ACTUAL PROJECT FIELDS
+Start date: Not supplied
+Duration: Not supplied
+Project cost: Not supplied
+
+REVIEW NOTE
+The public homepage returned no extractable text in the browsing tool, and secondary pages could not be retrieved. Feature references come from the four supplied full-page screenshots. Interactions and external integrations were not tested. The description uses the supplied development role and explains a plausible implementation rationale; it makes no claims about measured results.

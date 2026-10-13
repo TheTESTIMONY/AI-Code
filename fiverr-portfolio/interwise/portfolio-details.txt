@@ -1,0 +1,52 @@
+BRAND
+INTERWISE
+
+WEBSITE
+https://www.interwisewealth.com
+
+PROJECT TITLE (47/50 characters)
+Interwise - Squarespace Wealth Advisory Website
+
+ROLE
+Website Developer
+
+INDUSTRY
+Financial Services / Wealth Management
+
+SKILLS (exactly five)
+1. Squarespace
+2. Website Development
+3. Website Customization
+4. Content Management
+5. Front-End Development
+
+PROJECT DESCRIPTION (1252/1,400 characters, including spaces and paragraph breaks)
+I developed Interwise's Squarespace website around a practical challenge: helping visitors understand how investing and tax planning work together without getting lost in technical detail. The build needed to explain a wide range of services and give different client groups a clear way into the site.
+
+I organised the pages around those needs. The Services page groups specialties such as tax, investment and retirement planning into expandable sections, so visitors can explore one topic at a time. Dedicated pages for entrepreneurs, executives, real estate investors and medical professionals connect the firm's support to the questions each audience is likely to have.
+
+I also gave the team information a clear place in the experience, with professional profiles, biography links and credentials. The Insights section provides a separate home for educational articles and topic categories, keeping longer reading away from the main service journey.
+
+To bring the journey together, I connected prominent meeting buttons to the external scheduling page and included a step-by-step introduction to working with the firm. The result is a Squarespace website that helps visitors explore the expertise, understand the services and take a clear next step.
+
+PROJECT DATE, DURATION AND COST
+Enter your actual project details if Fiverr requests these fields.
+
+IMAGE UPLOAD ORDER
+01-cover.png
+02-website-showcase.png
+03-project-highlights.png
+All three images: 1280 x 769 pixels, RGB PNG.
+
+REFERENCE PAGES
+https://www.interwisewealth.com/
+https://www.interwisewealth.com/services
+https://www.interwisewealth.com/our-team
+https://www.interwisewealth.com/entrepreneurs
+https://www.interwisewealth.com/executives
+https://www.interwisewealth.com/real-estate-investors
+https://www.interwisewealth.com/medical-professionals
+https://www.interwisewealth.com/insights
+
+EDITORIAL NOTE
+The development rationale is framed from the visible website and your stated role. It does not claim measured results, a previous website condition or a client quote. External scheduling functionality was not tested; its public link was identified.

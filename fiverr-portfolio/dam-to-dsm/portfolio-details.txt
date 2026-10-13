@@ -1,0 +1,43 @@
+TITLE (43/50 characters)
+DAM TO DSM - Squarespace Race Event Website
+
+ROLE
+Squarespace Expert
+
+INDUSTRY
+Sports & Recreation / Running Events
+
+WEBSITE
+https://www.damtodsm.com/
+
+SKILLS (exactly five)
+1. Squarespace
+2. Website Development
+3. Website Design
+4. UX Design
+5. Website Customization
+
+DESCRIPTION (1232/1400 characters; includes spaces and paragraph breaks)
+For DAM TO DSM, I focused on a practical challenge: giving runners the excitement of a major event while helping them find the information they need to take part. Registration is only one step. Visitors also need to understand the course, plan race morning and know where to get help.
+
+My approach was to give those tasks clear places in the Squarespace site. The homepage introduces the race and its point-to-point route, with registration buttons linking to RunSignup. Weekend information separates packet pickup, race morning and the post-race celebration, so runners can work through the day without searching through one long block of text.
+
+I used grouped FAQ sections to organise questions about registration, transport, packet collection and virtual participation. Results links and race resources give returning runners useful reasons to revisit the site. The volunteer page explains the available roles and includes a team inquiry form, creating a separate path for people who want to help.
+
+Bold type, real event photography and turquoise-and-magenta accents keep the energy of the race throughout the pages. The result is an event website that supports the full journey, from deciding to enter to preparing for race day.
+
+OPTIONAL FACTUAL FIELDS
+Project start date: Not supplied
+Project duration: Not supplied
+Project cost: Not supplied
+
+REVIEWED SOURCE PAGES
+https://www.damtodsm.com/
+https://www.damtodsm.com/faq
+https://www.damtodsm.com/race-resources
+https://www.damtodsm.com/volunteer
+https://www.damtodsm.com/contact
+https://www.damtodsm.com/the-weekend-1
+
+REVIEW NOTES
+Process language expresses a design rationale around visible features and the supplied role. No claimed metrics or invented client history. Screenshot content retained unchanged; dates may differ from live pages. External registration checkout, form submissions and the course-map PDF were not tested.
